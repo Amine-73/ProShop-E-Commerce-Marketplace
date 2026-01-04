@@ -1,0 +1,48 @@
+import { Container, Grid, Typography, Card, CardMedia, CardContent, Rating } from '@mui/material';
+// Make sure this path matches your folder/file exactly (case-sensitive)
+import products from '../Products/Products.js'; 
+
+export default function SectionProducts() {
+  return (
+    <Container sx={{ py: 8 }} maxWidth="lg">
+      <Typography variant="h4" component="h2" sx={{ mb: 4, fontWeight: 'bold' }}>
+        Latest Products
+      </Typography>
+      
+      <Grid container spacing={4}>
+        {products.map((product) => (
+          <Grid item key={product._id} xs={12} sm={6} md={4} lg={3}>
+            <Card sx={{ 
+              height: '100%', 
+              display: 'flex', 
+              flexDirection: 'column',
+              transition: 'transform 0.2s', // Smooth hover effect
+              '&:hover': { transform: 'scale(1.02)' } 
+            }}>
+              <CardMedia
+                component="img"
+                image={product.image} // ✅ RE-ENABLED
+                alt={product.name}
+                sx={{ 
+                  height: 200, 
+                  objectFit: 'contain', 
+                  p: 2,
+                  bgcolor: '#f9f9f9' // Light background for the image area
+                }}
+              />
+              <CardContent sx={{ flexGrow: 1 }}>
+                <Typography gutterBottom variant="h6" component="h3" sx={{ fontSize: '1rem', height: '3rem', overflow: 'hidden' }}>
+                  {product.name}
+                </Typography>
+                <Rating value={product.rating} precision={0.5} readOnly size="small" />
+                <Typography variant="h5" sx={{ mt: 1, fontWeight: 'bold', color: 'primary.main' }}>
+                  ${product.price}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Container>
+  );
+}
