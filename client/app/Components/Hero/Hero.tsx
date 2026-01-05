@@ -1,10 +1,9 @@
 "use client";
 
-import React from 'react';
-import image_1 from '../../../images/image_1.jpg'
+
 import { Box, Typography, Button, Container, Stack } from '@mui/material';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-import { url } from 'inspector';
+
 
 export default function Hero() {
   return (
