@@ -30,3 +30,15 @@ A full-stack marketplace built with the MERN (MongoDB, Express, React, Node.js) 
 - **Product Grid**: Created the initial `SectionProducts` component using MUI `Grid` and `Card`.
 - **Data Mocking**: Set up `products.js` with dummy data to test the UI layout.
 - **Navbar Refinement**: Improved accessibility and styling of the Header icons and search bar.
+
+## 🚀 Recent Updates (Jan 7, 2026)
+Successfully transitioned the project from a static landing page to a functional multi-page e-commerce application.
+
+### Key Features Implemented:
+* **Dynamic Routing:** Implemented Next.js App Router logic (`/product/[id]`) to handle individual product views.
+* **Professional Product UI:** Designed a high-end "Amazon-style" product detail page with:
+    * Image-first responsive layout (Optimized for Desktop/Mobile).
+    * Dynamic pricing display (Split dollar/cents formatting).
+    * Quantity Selector logic based on real-time stock availability.
+* **State Integration:** Added React `useState` hooks to manage local product quantity before adding to cart.
+* **Data Expansion:** Expanded the product catalog to 6 high-quality tech items with optimized image paths.
