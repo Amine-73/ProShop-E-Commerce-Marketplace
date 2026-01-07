@@ -1,6 +1,6 @@
 import { Container, Grid, Typography, Card, CardMedia, CardContent, Rating } from '@mui/material';
-// Make sure this path matches your folder/file exactly (case-sensitive)
 import products from '../Products/Products.js'; 
+import Link from 'next/link'
 
 export default function SectionProducts() {
   return (
@@ -12,7 +12,8 @@ export default function SectionProducts() {
       <Grid container spacing={4}>
         {products.map((product) => (
           <Grid  key={product._id}  size={{ xs:12, md: 4 , sm:6,lg:4}}>
-            <Card sx={{ 
+            <Link href={`/product/${product._id}`} style={{textDecoration:'none'}}>
+              <Card sx={{ 
               height: '100%', 
               display: 'flex', 
               flexDirection: 'column',
@@ -25,8 +26,8 @@ export default function SectionProducts() {
                 alt={product.name}
                 sx={{ 
                   height: 200, 
-                  objectFit: 'contain', 
-                  p: 2,
+                  // objectFit: 'contain', 
+                  p: 0,
                   bgcolor: '#f9f9f9' // Light background for the image area
                 }}
               />
@@ -40,6 +41,7 @@ export default function SectionProducts() {
                 </Typography>
               </CardContent>
             </Card>
+            </Link>
           </Grid>
         ))}
       </Grid>
