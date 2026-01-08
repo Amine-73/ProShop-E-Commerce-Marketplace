@@ -3,15 +3,22 @@ import { AppBar, Toolbar, Typography, Box, InputBase, Badge, IconButton } from '
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PersonIcon from '@mui/icons-material/Person';
 import SearchIcon from '@mui/icons-material/Search';
+import { useCart } from '@/app/context/CartContext';
+import Link from 'next/link';
 
 export default function Navbar() {
+  const {cartItems}=useCart();
+  // calcule total quantity or all items in cart 
+  const cartItemsCount=cartItems.reduce((acc:number,item:any)=> acc+item.qty,0)
   return (
-    <AppBar position="sticky" sx={{ bgcolor: '#121212', py: 0.5 }}>
+    <AppBar position="sticky" sx={{ bgcolor: '#131921', zIndex: 1100 }}>
       <Toolbar sx={{ justifyContent: 'space-between' }}>
         
         {/* LOGO */}
         <Typography variant="h6" sx={{ fontWeight: 'bold', letterSpacing: 1 }}>
-          PRO<span style={{ color: '#1976d2' }}>SHOP</span>
+          <Link href="/" style={{color:'white',textDecoration:'none'}}> 
+            PRO<span style={{ color: '#1976d2' }}>SHOP</span>
+          </Link>
         </Typography>
 
         {/* SEARCH BAR */}
@@ -31,8 +38,12 @@ export default function Navbar() {
 
         {/* ICONS */}
         <Box>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="error">
+          <IconButton 
+            component={Link} 
+            href="/cart" 
+            sx={{ color: 'white' }}
+          >
+            <Badge badgeContent={cartItemsCount} color="error">
               <ShoppingCartIcon />
             </Badge>
           </IconButton>

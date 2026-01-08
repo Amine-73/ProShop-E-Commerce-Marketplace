@@ -19,12 +19,18 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Link from "next/link";
 import React from "react";
 import { useState } from "react";
+import {useCart} from '../../context/CartContext'
 
 export default function ProductPage({ params }) {
   //Unwrap the params promise using React.use()
   const unwrappedParams = React.use(params);
   const id = unwrappedParams.id;
   const [qty, setQty] = useState(1);
+
+  const {addToCart} =useCart();
+  const handleAddToCart=()=>{
+    addToCart(product,qty)
+  }
 
   // Find the product that matches the ID in the URL
   const product = products.find((p) => String(p._id) === String(id));
@@ -200,7 +206,8 @@ export default function ProductPage({ params }) {
                     mb: 1,
                     "&:hover": { bgcolor: "#f7ca00" },
                   }}
-                //   disabled='true'
+                  disabled= {product.countInStock === 0}
+                onClick={handleAddToCart}
                 >
                   Add to Cart
                 </Button>
@@ -213,6 +220,7 @@ export default function ProductPage({ params }) {
                     borderRadius: "20px",
                     "&:hover": { bgcolor: "#ff8f00" },
                   }}
+                  disabled={product.countInStock === 0}
                 >
                   Buy Now
                 </Button>

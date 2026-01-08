@@ -20,6 +20,14 @@ export default function SectionProducts() {
               transition: 'transform 0.2s', // Smooth hover effect
               '&:hover': { transform: 'scale(1.02)' } 
             }}>
+              {/* !!!!! I Should Convert img to import Image from 'next/image'; for more performence website 
+                <Image 
+                  src={product.image} 
+                  alt={product.name} 
+                  width={500} 
+                  height={500} 
+                  priority={true} // Use this for the main product image
+                />*/}
               <CardMedia
                 component="img"
                 image={product.image} // ✅ RE-ENABLED
