@@ -21,9 +21,9 @@ A full-stack marketplace built with the MERN (MongoDB, Express, React, Node.js) 
 - [x] Repository setup and README documentation.
 - [ ] Backend server initialization & MongoDB connection.
 - [ ] Product Schema & API Endpoints.
-- [ ] Frontend Catalog UI & Redux store setup.
-- [ ] Shopping Cart logic & LocalStorage sync.
-- [ ] Stripe Payment integration.
+- [x] Frontend Catalog UI & Redux store setup.
+- [x] Shopping Cart logic & LocalStorage sync.
+- [x] Stripe Payment integration.
 - [ ] Admin Dashboard and Role-based access.
 
 
