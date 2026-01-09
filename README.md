@@ -42,3 +42,15 @@ Successfully transitioned the project from a static landing page to a functional
     * Quantity Selector logic based on real-time stock availability.
 * **State Integration:** Added React `useState` hooks to manage local product quantity before adding to cart.
 * **Data Expansion:** Expanded the product catalog to 6 high-quality tech items with optimized image paths.
+
+## 🚀 Features Added Today (Jan 9, 2026)
+- **Shopping Cart & Checkout**: Fully functional front-end logic for managing cart items and a 3-step checkout process.
+- **Product Search**: Real-time filtering of products via a dedicated search bar and dynamic results page.
+- **Image Optimization**: Integrated Next.js `<Image />` component with `object-fit: cover` for faster loading and better UI.
+- **Responsive Auth UI**: Amazon-style Login and Registration forms built with Material UI v6.
+- **State Management**: Used React Context API to persist cart and shipping data across the application.
+
+## 🛠️ Tech Stack Updates
+- **Framework**: Next.js 15 (App Router)
+- **UI Library**: Material UI (MUI) v6
+- **Icons**: Lucide React / MUI Icons
