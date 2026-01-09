@@ -2,16 +2,26 @@
 import React, { useState } from 'react';
 import { Container, Typography, Button, Radio, RadioGroup, FormControlLabel, FormControl, Stepper, Step, StepLabel, Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import {useCart} from '../context/CartContext'
+
 
 export default function PaymentPage() {
   const [paymentMethod, setPaymentMethod] = useState('PayPal');
   const router = useRouter();
+  const { shippingAddress } = useCart();
 
   const submitHandler = (e:any) => {
     e.preventDefault();
     // Logic to save payment method can go here
     router.push('/placeorder');
   };
+
+  useEffect(() => {
+  if (!shippingAddress.address) {
+    router.push('/shipping'); // Send them back if they skipped a step
+  }
+}, [shippingAddress, router]);
   
 
   return (

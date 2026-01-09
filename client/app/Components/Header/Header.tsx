@@ -2,9 +2,10 @@
 import { AppBar, Toolbar, Typography, Box, InputBase, Badge, IconButton } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PersonIcon from '@mui/icons-material/Person';
-import SearchIcon from '@mui/icons-material/Search';
 import { useCart } from '@/app/context/CartContext';
 import Link from 'next/link';
+import SearchBox from '../searchBox/SearchBox';
+
 
 export default function Navbar() {
   const {cartItems}=useCart();
@@ -22,18 +23,8 @@ export default function Navbar() {
         </Typography>
 
         {/* SEARCH BAR */}
-        <Box sx={{backgroundColor: 'rgba(255,255,255,0.15)', 
-              borderRadius: '20px', 
-              display: 'flex', 
-              alignItems: 'center', 
-              px: 2,
-              width: { xs: '100%', md: '400px' }  }}>
-           
-            <SearchIcon sx={{ color: 'white', mr: 1 }} />
-            <InputBase 
-              placeholder="Search products..." 
-              sx={{ color: 'white', width: '100%' }} 
-            />
+        <Box>
+            <SearchBox/>
         </Box>
 
         {/* ICONS */}
@@ -48,7 +39,26 @@ export default function Navbar() {
             </Badge>
           </IconButton>
           <IconButton color="inherit">
-            <PersonIcon />
+          {/* inside your icons section */}
+          {/* <Link href="/profile" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center' }}>
+            
+              <PersonIcon />
+            
+            <Typography variant="body2" sx={{ display: { xs: 'none', md: 'block' } }}>
+              Sign In
+            </Typography>
+          </Link> */}
+
+          <Link href="/login" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+            
+              <PersonIcon />
+            
+            <Typography variant="body2" sx={{ ml: 1 }}>
+              Sign In
+            </Typography>
+          </Box>
+        </Link>
           </IconButton>
         </Box>
 

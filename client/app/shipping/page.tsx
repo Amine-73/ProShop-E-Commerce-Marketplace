@@ -18,6 +18,7 @@ export default function ShippingPage() {
   const submitHandler = (e:any) => {
     e.preventDefault();
     // Logic to save address to global state goes here
+    saveShippingAddress({ address, city, postalCode, country });
     router.push('/payment');
   };
 

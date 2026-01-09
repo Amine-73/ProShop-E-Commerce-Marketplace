@@ -1,6 +1,7 @@
-import { Container, Grid, Typography, Card, CardMedia, CardContent, Rating } from '@mui/material';
+import { Container, Grid, Typography, Card, Box, CardContent, Rating } from '@mui/material';
 import products from '../Products/Products.js'; 
 import Link from 'next/link'
+import Image from 'next/image';
 
 export default function SectionProducts() {
   return (
@@ -20,25 +21,19 @@ export default function SectionProducts() {
               transition: 'transform 0.2s', // Smooth hover effect
               '&:hover': { transform: 'scale(1.02)' } 
             }}>
-              {/* !!!!! I Should Convert img to import Image from 'next/image'; for more performence website 
-                <Image 
-                  src={product.image} 
-                  alt={product.name} 
-                  width={500} 
-                  height={500} 
-                  priority={true} // Use this for the main product image
-                />*/}
-              <CardMedia
-                component="img"
-                image={product.image} // ✅ RE-ENABLED
+              <Box sx={{ position: 'relative', height: 250, width: '100%' }}>
+                {/* Convert img to import Image from 'next/image'; for more performence website  */}
+            <Image
+                src={product.image}
                 alt={product.name}
-                sx={{ 
-                  height: 200, 
-                  // objectFit: 'contain', 
-                  p: 0,
-                  bgcolor: '#f9f9f9' // Light background for the image area
-                }}
-              />
+                fill 
+                style={{ 
+                objectFit: 'cover', // This stretches/crops the image to fill the whole box
+                objectPosition: 'center' // Keeps the subject of the photo centered
+                }} 
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+            </Box>
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography gutterBottom variant="h6" component="h3" sx={{ fontSize: '1rem', height: '3rem', overflow: 'hidden' }}>
                   {product.name}

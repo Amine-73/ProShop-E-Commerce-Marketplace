@@ -7,15 +7,17 @@ import {
   Select, MenuItem, Button, Card, Divider, Stack, Link as MuiLink 
 } from '@mui/material';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 
 export default function CartPage() {
-    // const router = useRouter();
+    const router = useRouter();
     const { cartItems, addToCart, removeFromCart } = useCart();
-//     const checkoutHandler = () => {
-//   // If you have a login system, you would check if the user is logged in here
-//   // For now, we go straight to shipping
-//   router.push('/shipping'); 
-// };
+    const checkoutHandler = () => {
+  // If you have a login system, you would check if the user is logged in here
+  // For now, we go straight to shipping
+  router.push('/shipping'); 
+};
   const subtotalItems = cartItems.reduce((acc, item) => acc + item.qty, 0);
   const subtotalPrice = cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2);
 
@@ -124,12 +126,12 @@ export default function CartPage() {
                   variant="contained" 
                   fullWidth 
                   disabled={cartItems.length === 0}
+                  onClick={checkoutHandler}
                   sx={{ 
                     bgcolor: '#FFD814', 
                     color: '#000', 
                     borderRadius: '50px', 
                     textTransform: 'none',
-                    // onClick={checkoutHandler},
                     fontWeight: 400,
                     boxShadow: '0 2px 5px 0 rgba(213,217,217,.5)',
                     '&:hover': { bgcolor: '#F7CA00' } 
