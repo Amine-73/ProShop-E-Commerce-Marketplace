@@ -1,4 +1,6 @@
 # ProShop-E-Commerce-Marketplace
+<img width="1901" height="687" alt="image" src="https://github.com/user-attachments/assets/3167f587-47b8-47ba-b736-caee976d4edf" />
+
 A full-stack marketplace built with the MERN (MongoDB, Express, React, Node.js) stack. This project focuses on complex state management, secure payment flows, and scalable architecture.
 
 ## 🚀 Key Features
