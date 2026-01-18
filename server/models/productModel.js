@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const productModel=mongoose.Schema(
+const productSchema=mongoose.Schema(
     {
         user:{
             type:mongoose.Schema.Types.ObjectId,
@@ -22,4 +22,4 @@ const productModel=mongoose.Schema(
 );
 
 const Product =mongoose.model('Product',productSchema);
-export default Product ;
+export default Product ;    
