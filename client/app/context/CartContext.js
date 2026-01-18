@@ -26,21 +26,21 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem("shippingAddress", JSON.stringify(data));
   };
 
-  const addToCart = (product, qty) => {
-    setCartItems((prevItems) => {
-      const existItem = prevItems.find((x) => x._id === product._id);
+    const addToCart = (product, qty) => {
+      setCartItems((prevItems) => {
+        const existItem = prevItems.find((x) => x._id === product._id);
 
-      if (existItem) {
-        return prevItems.map((x) =>
-          x._id === existItem._id
-            ? { ...existItem, qty: existItem.qty + qty }
-            : x
-        );
-      } else {
-        return [...prevItems, { ...product, qty }];
-      }
-    });
-  };
+        if (existItem) {
+          return prevItems.map((x) =>
+            x._id === existItem._id
+              ? { ...existItem, qty: existItem.qty + qty }
+              : x
+          );
+        } else {
+          return [...prevItems, { ...product, qty }];
+        }
+      });
+    };
 
   const clearCart = () => {
     setCartItems([]);

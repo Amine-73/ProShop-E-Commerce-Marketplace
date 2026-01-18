@@ -19,12 +19,37 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Link from "next/link";
 import React from "react";
 import { useState } from "react";
-import {useCart} from '../../context/CartContext'
+import {useCart} from '../../context/CartContext';
+import { useParams,useRouter } from "next/navigation";
+import axios from 'axios'
+import { useEffect } from "react";
+
 
 export default function ProductPage({ params }) {
   //Unwrap the params promise using React.use()
   const unwrappedParams = React.use(params);
-  const id = unwrappedParams.id;
+  const {id}=useParams();//get the _id From URL
+  const [product,setProduct]=useState<any>(null);
+  const [loading,setLoading]=useState(true);
+  const [error,setError]=useState(false)
+
+
+  useEffect(()=>{
+    const fetchProduct=async()=>{
+      try {
+        const {data}=await axios.get(`/api/products/${id}`);
+        setProduct(data);
+        setLoading(data);
+      } catch (error) {
+        console.log(err);
+        setError(true);
+        setLoading(false)
+      }
+    }
+    if(id) fetchProduct();
+  },[id])
+
+  // const id = unwrappedParams.id;
   const [qty, setQty] = useState(1);
 
   const {addToCart} =useCart();
@@ -32,8 +57,11 @@ export default function ProductPage({ params }) {
     addToCart(product,qty)
   }
 
+  if (loading) return <Container sx={{ py: 5 }}><Typography>Loading...</Typography></Container>;
+  if (error || !product) return <Container sx={{ py: 5 }}><Typography color="error">Product Not Found</Typography></Container>;
+
   // Find the product that matches the ID in the URL
-  const product = products.find((p) => String(p._id) === String(id));
+  // const product = products.find((p) => String(p._id) === String(id));
 
   if (!product) {
     return <Typography variant="h5">Product Not Found</Typography>;

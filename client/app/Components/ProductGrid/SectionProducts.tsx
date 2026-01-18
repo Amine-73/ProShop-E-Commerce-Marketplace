@@ -1,9 +1,29 @@
 import { Container, Grid, Typography, Card, Box, CardContent, Rating } from '@mui/material';
+import {useEffect,useState} from 'react'
+import axios from 'axios'
 import products from '../Products/Products.js'; 
 import Link from 'next/link'
 import Image from 'next/image';
 
 export default function SectionProducts() {
+  const [products,setProducts]=useState([]);
+  const [loading,setLoading]=useState(true);
+
+  useEffect(()=>{
+    const fetchProducts=async()=>{
+      try {
+// Change this line:
+        const { data } = await axios.get('http://localhost:5000/api/products');        setProducts(data);
+        setLoading(false);
+      } catch (error) {
+        console.log("Error fetching products:",error);
+        setLoading(false);
+      }
+    }
+    fetchProducts();
+  },[])
+  if(loading) return <Typography>Loading products ...</Typography> 
+
   return (
     <Container sx={{ py: 8 }} maxWidth="lg">
       <Typography variant="h4" component="h2" sx={{ mb: 4, fontWeight: 'bold' }}>

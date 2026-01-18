@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 export default function CartPage() {
     const router = useRouter();
     const { cartItems, addToCart, removeFromCart } = useCart();
+    
     const checkoutHandler = () => {
   // If you have a login system, you would check if the user is logged in here
   // For now, we go straight to shipping
