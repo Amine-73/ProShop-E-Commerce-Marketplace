@@ -8,16 +8,30 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { addToCart,removeFromCart } from '../../store/slices/cartSlice';
+import { useDispatch,useSelector } from 'react-redux';
 
 
 export default function CartPage() {
     const router = useRouter();
-    const { cartItems, addToCart, removeFromCart } = useCart();
+    const dispatch=useDispatch()
+    const { cartItems,itemsPrice } = useSelector((state)=>state.cart);
+
+    // handlers using dispatch 
+    const addToCartHandler=(item,qty)=>{
+      dispatch(addToCart({...item,qty}));
+    };
+
+    const removeFromCartHandler=(id)=>{
+      dispatch(removeFromCart(id))
+    };
+
+
     
     const checkoutHandler = () => {
   // If you have a login system, you would check if the user is logged in here
   // For now, we go straight to shipping
-  router.push('/shipping'); 
+  router.push('/login?redirect=/shipping'); 
 };
   const subtotalItems = cartItems.reduce((acc, item) => acc + item.qty, 0);
   const subtotalPrice = cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2);
@@ -73,7 +87,7 @@ export default function CartPage() {
                               <Select
                                 size="small"
                                 value={item.qty}
-                                onChange={(e) => addToCart(item, Number(e.target.value) - item.qty)}
+                                onChange={(e) => addToCartHandler(item, Number(e.target.value))}
                                 sx={{ bgcolor: '#F0F2F2', borderRadius: '8px', fontSize: '13px' }}
                               >
                                 {[...Array(item.countInStock).keys()].map((x) => (
@@ -83,7 +97,7 @@ export default function CartPage() {
                               <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
                               <MuiLink 
                                 component="button" 
-                                onClick={() => removeFromCart(item._id)}
+                                onClick={() => removeFromCartHandler(item._id)}
                                 sx={{ fontSize: '15px', color: '#ff4343ff', textDecoration: 'none' }}
                               >
                                 Delete

@@ -19,24 +19,25 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Link from "next/link";
 import React from "react";
 import { useState } from "react";
-import {useCart} from '../../context/CartContext';
-import { useParams,useRouter } from "next/navigation";
-import axios from 'axios'
+import { useCart } from "../../context/CartContext";
+import { useParams, useRouter } from "next/navigation";
+import axios from "axios";
 import { useEffect } from "react";
-import {useGetProductDetailsQuery} from '../../../store/slices/apiSlice';
+import { useGetProductDetailsQuery } from "../../../store/slices/apiSlice";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../../store/slices/cartSlice";
+// import { useState } from "react";
 
 export default function ProductPage({ params }) {
   //Unwrap the params promise using React.use()
   const unwrappedParams = React.use(params);
-  const {id}=useParams();//get the _id From URL
+  const { id } = useParams(); //get the _id From URL
 
   // const [product,setProduct]=useState(null);
   // const [loading,setLoading]=useState(true);
   // const [error,setError]=useState(false)
-  
 
-
-  const {data:product,isLoading,error}=useGetProductDetailsQuery();
+  const { data: product, isLoading, error } = useGetProductDetailsQuery(id);
 
   // useEffect(()=>{
   //   const fetchProduct=async()=>{
@@ -55,14 +56,36 @@ export default function ProductPage({ params }) {
 
   // const id = unwrappedParams.id;
   const [qty, setQty] = useState(1);
+  const dispatch = useDispatch();
+  const router = useRouter();
 
-  const {addToCart} =useCart();
-  const handleAddToCart=()=>{
-    addToCart(product,qty)
-  }
+  const addToCartHandler = () => {
+    dispatch(addToCart({ ...product, qty }));
+    // router.push("/cart");
+  };
 
-  if (loading) return <Container sx={{ py: 5 }}><Typography>Loading...</Typography></Container>;
-  if (error || !product) return <Container sx={{ py: 5 }}><Typography color="error">Product Not Found</Typography></Container>;
+  // const {addToCart} =useCart();
+  // const handleAddToCart=()=>{
+  //   addToCart(product,qty)
+  // }
+
+  if (isLoading)
+    return (
+      <Container sx={{ py: 5 }}>
+        <Typography>Loading...</Typography>
+      </Container>
+    );
+  if (error || !product)
+    return (
+      <Container sx={{ py: 5 }}>
+        <Typography color="error">
+          Product Not Found . Please Try again
+        </Typography>
+        <Button component={Link} href="/" sx={{ mt: 2 }}>
+          Back to Home
+        </Button>
+      </Container>
+    );
 
   // Find the product that matches the ID in the URL
   // const product = products.find((p) => String(p._id) === String(id));
@@ -166,7 +189,8 @@ export default function ProductPage({ params }) {
                   {Math.floor(product.price)}
                 </Typography>
                 <Typography variant="h6" sx={{ mt: 0.5 }}>
-                  {(product.price % 1).toFixed(2).substring(2)}
+                  {/* Safely get the decimals or default to 00 */}
+                  {(product.price % 1).toFixed(2).split(".")[1] || "00"}
                 </Typography>
               </Stack>
               <Typography variant="body2" color="text.secondary">
@@ -238,8 +262,8 @@ export default function ProductPage({ params }) {
                     mb: 1,
                     "&:hover": { bgcolor: "#f7ca00" },
                   }}
-                  disabled= {product.countInStock === 0}
-                onClick={handleAddToCart}
+                  disabled={product.countInStock === 0}
+                  onClick={addToCartHandler}
                 >
                   Add to Cart
                 </Button>

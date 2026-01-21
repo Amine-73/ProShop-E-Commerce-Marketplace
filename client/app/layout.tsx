@@ -29,15 +29,16 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <CartProvider>
+      ><ReduxProvider>
+        {/* <CartProvider> */}
+          
           <Header />
-          <ReduxProvider>
             <main>
           {children}
         </main>
-          </ReduxProvider>
-        </CartProvider>
+          
+        {/* </CartProvider> */}
+        </ReduxProvider>
         
       </body>
     </html>

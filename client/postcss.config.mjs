@@ -1,25 +1,7 @@
-/** @type {import('next').NextConfig} */
+
 const config = {
   plugins: {
     "@tailwindcss/postcss": {},
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: 'http://localhost:5000/api/:path*',
-      },
-    ];
-  },
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '5000',
-        pathname: '/images/**',
-      },
-    ],
   },
 };
 

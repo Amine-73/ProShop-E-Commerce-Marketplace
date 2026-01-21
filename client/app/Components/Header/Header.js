@@ -2,15 +2,24 @@
 import { AppBar, Toolbar, Typography, Box, InputBase, Badge, IconButton } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PersonIcon from '@mui/icons-material/Person';
-import { useCart } from '@/app/context/CartContext';
+// import { useCart } from '@/app/context/CartContext';
 import Link from 'next/link';
 import SearchBox from '../searchBox/SearchBox';
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+
 
 
 export default function Navbar() {
-  const {cartItems}=useCart();
+  const {cartItems}=useSelector((state)=>state.cart);
+  const [mounted,setMounted]=useState(false);
+  // This ensures the component only shows cart data AFTER it reaches the browser
+  useEffect(()=>{
+    setMounted(true)
+  },[])
+
   // calcule total quantity or all items in cart 
-  const cartItemsCount=cartItems.reduce((acc:number,item:any)=> acc+item.qty,0)
+  const cartItemsCount=mounted ? cartItems.reduce((acc, item) => acc + item.qty, 0) : 0
   return (
     <AppBar position="sticky" sx={{ bgcolor: '#131921', zIndex: 1100 }}>
       <Toolbar sx={{ justifyContent: 'space-between' }}>
