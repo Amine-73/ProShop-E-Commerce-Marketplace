@@ -23,31 +23,35 @@ import {useCart} from '../../context/CartContext';
 import { useParams,useRouter } from "next/navigation";
 import axios from 'axios'
 import { useEffect } from "react";
-
+import {useGetProductDetailsQuery} from '../../../store/slices/apiSlice';
 
 export default function ProductPage({ params }) {
   //Unwrap the params promise using React.use()
   const unwrappedParams = React.use(params);
   const {id}=useParams();//get the _id From URL
-  const [product,setProduct]=useState<any>(null);
-  const [loading,setLoading]=useState(true);
-  const [error,setError]=useState(false)
+
+  // const [product,setProduct]=useState(null);
+  // const [loading,setLoading]=useState(true);
+  // const [error,setError]=useState(false)
+  
 
 
-  useEffect(()=>{
-    const fetchProduct=async()=>{
-      try {
-        const {data}=await axios.get(`/api/products/${id}`);
-        setProduct(data);
-        setLoading(data);
-      } catch (error) {
-        console.log(err);
-        setError(true);
-        setLoading(false)
-      }
-    }
-    if(id) fetchProduct();
-  },[id])
+  const {data:product,isLoading,error}=useGetProductDetailsQuery();
+
+  // useEffect(()=>{
+  //   const fetchProduct=async()=>{
+  //     try {
+  //       const {data}=await axios.get(`http://localhost:5000/api/products/${id}`);
+  //       setProduct(data);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       console.log(error);
+  //       setError(true);
+  //       setLoading(false)
+  //     }
+  //   }
+  //   if(id) fetchProduct();
+  // },[id])
 
   // const id = unwrappedParams.id;
   const [qty, setQty] = useState(1);
@@ -63,9 +67,9 @@ export default function ProductPage({ params }) {
   // Find the product that matches the ID in the URL
   // const product = products.find((p) => String(p._id) === String(id));
 
-  if (!product) {
-    return <Typography variant="h5">Product Not Found</Typography>;
-  }
+  // if (!product) {
+  //   return <Typography variant="h5">Product Not Found</Typography>;
+  // }
 
   return (
     <Container maxWidth="lg" sx={{ py: 5 }}>

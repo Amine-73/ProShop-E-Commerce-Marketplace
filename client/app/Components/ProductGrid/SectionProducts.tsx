@@ -1,28 +1,35 @@
-import { Container, Grid, Typography, Card, Box, CardContent, Rating } from '@mui/material';
-import {useEffect,useState} from 'react'
-import axios from 'axios'
-import products from '../Products/Products.js'; 
+import { Container, Grid, Typography, Card, Box, CardContent,CircularProgress, Rating } from '@mui/material';
+// import {useEffect,useState} from 'react'
+// import axios from 'axios'
 import Link from 'next/link'
 import Image from 'next/image';
+import {useGetProductsQuery} from '../../../store/slices/apiSlice.js';
+
+
+
 
 export default function SectionProducts() {
-  const [products,setProducts]=useState([]);
-  const [loading,setLoading]=useState(true);
+  // const [products,setProducts]=useState([]);
+  // const [loading,setLoading]=useState(true);
 
-  useEffect(()=>{
-    const fetchProducts=async()=>{
-      try {
-// Change this line:
-        const { data } = await axios.get('http://localhost:5000/api/products');        setProducts(data);
-        setLoading(false);
-      } catch (error) {
-        console.log("Error fetching products:",error);
-        setLoading(false);
-      }
-    }
-    fetchProducts();
-  },[])
-  if(loading) return <Typography>Loading products ...</Typography> 
+//   useEffect(()=>{
+//     const fetchProducts=async()=>{
+//       try {
+// // Change this line:
+//         const { data } = await axios.get('http://localhost:5000/api/products');        setProducts(data);
+//         setLoading(false);
+//       } catch (error) {
+//         console.log("Error fetching products:",error);
+//         setLoading(false);
+//       }
+//     }
+//     fetchProducts();
+//   },[])
+
+const {data:products,isLoading,error}=useGetProductsQuery();
+
+  if (isLoading) return <Box sx={{ display: 'flex', justifyContent: 'center', py: 5 }}><CircularProgress /></Box>;
+  if (error) return <Typography color="error">Error loading products</Typography>; 
 
   return (
     <Container sx={{ py: 8 }} maxWidth="lg">
