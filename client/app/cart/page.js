@@ -96,7 +96,7 @@ export default function CartPage() {
                               </Select>
                               <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
                               <MuiLink 
-                                component="button" 
+                                component="span" 
                                 onClick={() => removeFromCartHandler(item._id)}
                                 sx={{ fontSize: '15px', color: '#ff4343ff', textDecoration: 'none' }}
                               >

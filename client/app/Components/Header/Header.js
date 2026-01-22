@@ -1,18 +1,40 @@
 "use client";
-import { AppBar, Toolbar, Typography, Box, InputBase, Badge, IconButton } from '@mui/material';
+import { AppBar, Toolbar, Typography, Box, InputBase, Badge, IconButton,Button } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PersonIcon from '@mui/icons-material/Person';
 // import { useCart } from '@/app/context/CartContext';
 import Link from 'next/link';
 import SearchBox from '../searchBox/SearchBox';
-import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-
+import { useSelector,useDispatch } from 'react-redux';
+import { logout } from '@/store/slices/userSlice';
+import { useRouter } from 'next/navigation';
+import { AccountCircle, KeyboardArrowDown } from '@mui/icons-material';
 
 
 export default function Navbar() {
   const {cartItems}=useSelector((state)=>state.cart);
   const [mounted,setMounted]=useState(false);
+
+  const dispatch=useDispatch();
+  const router=useRouter()
+  // get userInfo from Redux 
+  const {userInfo}=useSelector((state)=>state.user);
+  // menu state for the dropdown 
+  const [anchorEl,setAnchorEl]=useState(null)
+  const open=Boolean(anchorEl);
+
+  const handleClick=(event)=>{
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose=()=>{
+    setAnchorEl(null);
+  }
+  const logoutHandler=()=>{
+    dispatch(logout());
+    handleClose();
+    router.push('/login');
+  }
   // This ensures the component only shows cart data AFTER it reaches the browser
   useEffect(()=>{
     setMounted(true)
@@ -58,16 +80,52 @@ export default function Navbar() {
             </Typography>
           </Link> */}
 
-          <Link href="/login" style={{ textDecoration: 'none', color: 'inherit' }}>
+          {/* <Link href="/login" style={{ textDecoration: 'none', color: 'inherit' }}> */}
           <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
             
-              <PersonIcon />
+              {/* <PersonIcon />
             
             <Typography variant="body2" sx={{ ml: 1 }}>
               Sign In
+            </Typography> */}
+
+            {userInfo ? (
+        <>
+          <Button
+            onClick={handleClick}
+            sx={{ color: 'white', textTransform: 'none' }}
+            endIcon={<KeyboardArrowDownIcon />}
+          >
+            <Typography variant="body1">
+              Hello, {userInfo.name}
             </Typography>
+          </Button>
+          
+          <Menu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={() => { handleClose(); router.push('/profile'); }}>
+              Profile
+            </MenuItem>
+            <MenuItem onClick={logoutHandler}>
+              Logout
+            </MenuItem>
+          </Menu>
+        </>
+      ) : (
+        <Button 
+          onClick={() => router.push('/login')}
+          sx={{ color: 'white' }}
+          startIcon={<AccountCircle />}
+        >
+          Sign In
+        </Button>
+      )}
+
           </Box>
-        </Link>
+        {/* </Link> */}
           </IconButton>
         </Box>
 
