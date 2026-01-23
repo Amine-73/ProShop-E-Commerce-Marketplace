@@ -3,19 +3,26 @@ import React, { useState } from 'react';
 import { Container, Box, Typography, TextField, Button, Stack, Stepper, Step, StepLabel } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../context/CartContext';
+import { useDispatch, useSelector } from 'react-redux';
+import {saveShippingAddress} from '@/store/slices/cartSlice'
 
 const steps = ['Login', 'Shipping', 'Payment', 'Place Order'];
 
 export default function ShippingPage() {
   const router = useRouter();
-  const { shippingAddress, saveShippingAddress } = useCart();
+  // const { shippingAddress, saveShippingAddress } = useCart();
   // State for form fields
-  const [address, setAddress] = useState(shippingAddress.address || '');
-  const [city, setCity] = useState(shippingAddress.city || '');
-  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode || '');
-  const [country, setCountry] = useState(shippingAddress.country || '');
+  const {shippingAddress}=useSelector((state)=>state.cart);
 
-  const submitHandler = (e:any) => {
+  const [address, setAddress] = useState(shippingAddress?.address || '');
+  const [city, setCity] = useState(shippingAddress?.city || '');
+  const [postalCode, setPostalCode] = useState(shippingAddress?.postalCode || '');
+  const [country, setCountry] = useState(shippingAddress?.country || '');
+
+  const dispatch=useDispatch()
+
+
+  const submitHandler = (e) => {
     e.preventDefault();
     // Logic to save address to global state goes here
     saveShippingAddress({ address, city, postalCode, country });

@@ -64,8 +64,13 @@ const cartSlice = createSlice({
       ).toFixed(2);
       localStorage.setItem("cart", JSON.stringify(state));
     },
+    saveShippingAddress:(state,action)=>{
+        state.shippingAddress=action.payload;
+        //update local storage so it persist on refresh
+        localStorage.setItem('cart',JSON.stringify(state))
+    }
   },
 });
 
-export const { addToCart, hydrateCart,removeFromCart } = cartSlice.actions;
+export const { addToCart, hydrateCart,removeFromCart ,saveShippingAddress} = cartSlice.actions;
 export default cartSlice.reducer;
