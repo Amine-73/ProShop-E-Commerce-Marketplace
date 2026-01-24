@@ -3,22 +3,31 @@ import React, { useState } from 'react';
 import { Container, Typography, Button, Radio, RadioGroup, FormControlLabel, FormControl, Stepper, Step, StepLabel, Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import {useCart} from '../context/CartContext'
+// import {useCart} from '../context/CartContext'
+import { UseSelector,UseDispatch, useSelector, useDispatch } from 'react-redux';
+import { savePaymentMethod } from '@/store/slices/cartSlice';
 
 
 export default function PaymentPage() {
   const [paymentMethod, setPaymentMethod] = useState('PayPal');
   const router = useRouter();
-  const { shippingAddress } = useCart();
+  //get shipping Adress from Redux Store
+  const shippingAddress=useSelector((state)=>state.cart)
+  const dispatch=useDispatch();
+  // const { shippingAddress } = useCart();
 
-  const submitHandler = (e:any) => {
+
+  const submitHandler = (e) => {
     e.preventDefault();
+    //Save the payment method to Redux
+    dispatch(savePaymentMethod(paymentMethod))
     // Logic to save payment method can go here
     router.push('/placeorder');
   };
 
   useEffect(() => {
-  if (!shippingAddress.address) {
+    const storedCart=JSON.parse(localStorage.getItem('cart'));
+  if (!storedCart?.shippingAddress?.address && !shippingAddress.address) {
     router.push('/shipping'); // Send them back if they skipped a step
   }
 }, [shippingAddress, router]);

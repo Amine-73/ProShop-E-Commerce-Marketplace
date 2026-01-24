@@ -9,7 +9,7 @@ import {
   IconButton,
   Button,
   Menu,
-  MenuItem
+  MenuItem,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
@@ -70,69 +70,49 @@ export default function Navbar() {
         </Box>
 
         {/* ICONS */}
-        <Box>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          {/* Cart Link */}
           <IconButton component={Link} href="/cart" sx={{ color: "white" }}>
             <Badge badgeContent={cartItemsCount} color="error">
               <ShoppingCartIcon />
             </Badge>
           </IconButton>
-          {/* <IconButton color="inherit"> */}
-            {/* inside your icons section */}
-            {/* <Link href="/profile" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center' }}>
-            
-              <PersonIcon />
-            
-            <Typography variant="body2" sx={{ display: { xs: 'none', md: 'block' } }}>
-              Sign In
-            </Typography>
-          </Link> */}
 
-            {/* <Link href="/login" style={{ textDecoration: 'none', color: 'inherit' }}> */}
-            <Box
-              sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-            >
-              {/* <PersonIcon />
-            
-            <Typography variant="body2" sx={{ ml: 1 }}>
-              Sign In
-            </Typography> */}
-
-              {userInfo ? (
-                <>
-                  <Button
-                    onClick={handleClick}
-                    sx={{ color: "white", textTransform: "none" }}
-                    endIcon={<KeyboardArrowDown />}
-                  >
-                    <Typography variant="body1">
-                       {userInfo.name}
-                    </Typography>
-                  </Button>
-
-                  <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                    <MenuItem
-                      onClick={() => {
-                        handleClose();
-                        router.push("/profile");
-                      }}
-                    >
-                      Profile
-                    </MenuItem>
-                    <MenuItem onClick={logoutHandler}>Logout</MenuItem>
-                  </Menu>
-                </>
-              ) : (
-                <Button
-                  onClick={() => router.push("/login")}
-                  sx={{ color: "white" }}
-                  startIcon={<AccountCircle />}
+          {/* User Menu - Notice we removed the IconButton wrapper here */}
+          {userInfo ? (
+            <Box>
+              <Button
+                onClick={handleClick}
+                sx={{
+                  color: "white",
+                  textTransform: "none",
+                  whiteSpace: "nowrap",
+                }}
+                endIcon={<KeyboardArrowDown />}
+              >
+                {userInfo.name}
+              </Button>
+              <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+                <MenuItem
+                  onClick={() => {
+                    handleClose();
+                    router.push("/profile");
+                  }}
                 >
-                  Sign In
-                </Button>
-              )}
+                  Profile
+                </MenuItem>
+                <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+              </Menu>
             </Box>
-            {/* </Link> */}
-          {/* </IconButton> */}
+          ) : (
+            <Button
+              onClick={() => router.push("/login")}
+              sx={{ color: "white" }}
+              startIcon={<AccountCircle />}
+            >
+              Sign In
+            </Button>
+          )}
         </Box>
       </Toolbar>
     </AppBar>

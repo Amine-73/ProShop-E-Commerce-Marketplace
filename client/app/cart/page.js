@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { addToCart,removeFromCart } from '../../store/slices/cartSlice';
+import { addToCart,clearCartItem,removeFromCart } from '../../store/slices/cartSlice';
 import { useDispatch,useSelector } from 'react-redux';
 
 
@@ -26,6 +26,11 @@ export default function CartPage() {
       dispatch(removeFromCart(id))
     };
 
+    const clearCartItemHandler=()=>{
+      if(window.confirm('Are you sure you want to remove all items from our cart ?')){
+        dispatch(clearCartItem())
+      }
+    }
 
     
     const checkoutHandler = () => {
@@ -47,7 +52,7 @@ export default function CartPage() {
               <Typography variant="h4" sx={{ fontWeight: 500, mb: 1 }}>
                 Shopping Cart
               </Typography>
-              <MuiLink href="#" underline="hover" sx={{ fontSize: '18px', color: '#ff4343ff' }}>
+              <MuiLink onClick={clearCartItemHandler} href="#" underline="hover" sx={{ fontSize: '18px', color: '#ff4343ff' }}>
                 Deselect all items
               </MuiLink>
               <Typography align="right" variant="body2" sx={{ color: '#565959', mb: 1 }}>

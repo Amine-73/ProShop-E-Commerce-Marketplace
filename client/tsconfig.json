@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "app/Components/Products/Products.js", "app/Components/Header/Header.js", "app/Components/ProductGrid/SectionProducts.js", "app/layout.js", "app/page.js", "app/login/page.js", "app/shipping/page.js"  ],
+, "app/Components/Products/Products.js", "app/Components/Header/Header.js", "app/Components/ProductGrid/SectionProducts.js", "app/layout.js", "app/page.js", "app/login/page.js", "app/shipping/page.js", "app/payment/page.js"  ],
   "exclude": ["node_modules"]
 }

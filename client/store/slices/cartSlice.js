@@ -1,14 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-  cartItems: [],
-  itemsPrice: 0,
-  shippingPrice: 0,
-  taxPrice: 0,
-  totalPrice: 0,
-};
+// const initialState = {
+//   cartItems: [],
+//   itemsPrice: 0,
+//   shippingPrice: 0,
+//   taxPrice: 0,
+//   totalPrice: 0,
+// };
 
-// const initialState=typeof window !== 'undefined' && localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : {cartItems: []}
+// Ensure you are parsing the 'cart' from localStorage correctly
+const initialState = typeof window !== 'undefined' && localStorage.getItem('cart')
+  ? JSON.parse(localStorage.getItem('cart'))
+  : { cartItems: [], shippingAddress: {}, paymentMethod: 'PayPal' };
+
+
 
 const addDecimals = (num) => (Math.round(num * 100) / 100).toFixed(2);
 
@@ -68,9 +73,18 @@ const cartSlice = createSlice({
         state.shippingAddress=action.payload;
         //update local storage so it persist on refresh
         localStorage.setItem('cart',JSON.stringify(state))
+    },
+    savePaymentMethod:(state,action)=>{
+        state.paymentMethod=action.payload;
+        localStorage.setItem('cart',JSON.stringify(state))
+    },
+    clearCartItem:(state)=>{
+        state.cartItems=[];
+        // update local storage so the cart stays empty after refresh 
+        localStorage.setItem('cart',JSON.stringify(state));
     }
   },
 });
 
-export const { addToCart, hydrateCart,removeFromCart ,saveShippingAddress} = cartSlice.actions;
+export const { addToCart, hydrateCart,removeFromCart ,saveShippingAddress,savePaymentMethod,clearCartItem} = cartSlice.actions;
 export default cartSlice.reducer;

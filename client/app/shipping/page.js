@@ -20,12 +20,14 @@ export default function ShippingPage() {
   const [country, setCountry] = useState(shippingAddress?.country || '');
 
   const dispatch=useDispatch()
-
-
+  const addressData={address,city,postalCode,country}
+  
   const submitHandler = (e) => {
     e.preventDefault();
-    // Logic to save address to global state goes here
-    saveShippingAddress({ address, city, postalCode, country });
+    console.log('Dispatchign address',addressData)
+    // Save to Redux
+    dispatch(saveShippingAddress({ address, city, postalCode, country }));
+    //Move to Payment Screen
     router.push('/payment');
   };
 
