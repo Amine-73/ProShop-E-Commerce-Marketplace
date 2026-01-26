@@ -1,23 +1,36 @@
 "use client";
 import { useRouter } from 'next/navigation';
 import { Container, Grid, Typography, List, ListItem, Box, Card, Button, Stack, Divider } from '@mui/material';
-import { useCart } from '../context/CartContext';
+// import { useCart } from '../context/CartContext';
+import { UseSelector,useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
+import { useEffect } from 'react';
+import { clearCartItem } from '@/store/slices/cartSlice';
 
 export default function PlaceOrderPage() {
   const router = useRouter();
-  const { cartItems, shippingAddress, paymentMethod, clearCart } = useCart();
+  const dispatch=useDispatch();
+  const cart =useSelector((state)=>state.cart)
+  // const { cartItems, shippingAddress, paymentMethod, clearCart } = useCart();
+  const {cartItems,shippingAddress={},paymentMethod,clearCart}=cart||{};
   // Calculations
-  const itemsPrice = cartItems.reduce((acc:number, item:any) => acc + item.price * item.qty, 0);
-  const shippingPrice = itemsPrice > 100 ? 0 : 10; // Free shipping over $100
-  const totalPrice = itemsPrice + shippingPrice;
+  // const itemsPrice = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
+  // const shippingPrice = itemsPrice > 100 ? 0 : 10; // Free shipping over $100
+  // const totalPrice = itemsPrice + shippingPrice;
 
+
+  useEffect(()=>{
+    if(!shippingAddress.address)
+      router.push('/shipping')
+  },[shippingAddress.address,router])
+
+  const {itemsPrice,shippingPrice,taxPrice,totalPrice}=cart
   // 1. Define the handler function here
   const placeOrderHandler = () => {
     // In a real app, you would call an API here to save the order to a database
     
     // Clear the cart items from state and localStorage
-    clearCart();
+    dispatch(clearCartItem());
     
     // Redirect the user to a success page
     router.push('/success');
@@ -53,7 +66,7 @@ export default function PlaceOrderPage() {
         <Box>
           <Typography variant="h6" sx={{ mb: 2 }}>Order Items</Typography>
           <List>
-            {cartItems.map((item:any) => (
+            {cartItems.map((item) => (
               <ListItem key={item._id} sx={{ px: 0 }}>
                 {/* Updated nested Grid to remove "item" */}
                 <Grid container alignItems="center" spacing={2}>
@@ -77,35 +90,39 @@ export default function PlaceOrderPage() {
     </Grid>
 
     {/* Right Column: Order Summary Sidebar */}
-    <Grid size={{ xs: 12, md: 4 }}>
-      <Card sx={{ p: 3 }}>
-        <Typography variant="h6" gutterBottom>Price Details</Typography>
-        <Stack spacing={2}>
-          <Box display="flex" justifyContent="space-between">
-            <Typography>Items</Typography>
-            <Typography>${itemsPrice.toFixed(2)}</Typography>
-          </Box>
-          <Box display="flex" justifyContent="space-between">
-            <Typography>Shipping</Typography>
-            <Typography>${shippingPrice.toFixed(2)}</Typography>
-          </Box>
-          <Divider />
-          <Box display="flex" justifyContent="space-between">
-            <Typography variant="h6">Total</Typography>
-            <Typography variant="h6" color="primary">${totalPrice.toFixed(2)}</Typography>
-          </Box>
-          <Button 
-            variant="contained" 
-            fullWidth 
-            onClick={placeOrderHandler} // Make sure this function is defined!
-            sx={{ bgcolor: '#FFD814', color: '#000', fontWeight: 'bold', mt: 2, '&:hover': { bgcolor: '#F7CA00' } }}
-          >
-            Place Order
-          </Button>
-        </Stack>
-      </Card>
-    </Grid>
-  </Grid>
-</Container>
+   <Grid item xs={12} md={4}>
+          <Card sx={{ p: 3, borderRadius: 2, border: '1px solid #ddd' }} elevation={0}>
+            <Typography variant="h6" sx={{ mb: 2 }} fontWeight="bold">Order Summary</Typography>
+            <Stack spacing={2}>
+              <Box display="flex" justifyContent="space-between">
+                <Typography color="text.secondary">Items</Typography>
+                <Typography>${itemsPrice}</Typography>
+              </Box>
+              <Box display="flex" justifyContent="space-between">
+                <Typography color="text.secondary">Shipping</Typography>
+                <Typography>${shippingPrice}</Typography>
+              </Box>
+              <Box display="flex" justifyContent="space-between">
+                <Typography color="text.secondary">Tax</Typography>
+                <Typography>${taxPrice}</Typography>
+              </Box>
+              <Divider />
+              <Box display="flex" justifyContent="space-between">
+                <Typography variant="h6" fontWeight="bold">Order Total</Typography>
+                <Typography variant="h6" color="primary" fontWeight="bold">${totalPrice}</Typography>
+              </Box>
+              <Button 
+                variant="contained" 
+                fullWidth 
+                onClick={placeOrderHandler}
+                sx={{ bgcolor: '#FFD814', color: '#000', fontWeight: 'bold', mt: 2, py: 1.5, '&:hover': { bgcolor: '#F7CA00' } }}
+              >
+                Place Order
+              </Button>
+            </Stack>
+          </Card>
+        </Grid>
+      </Grid>
+    </Container>
   );
 }

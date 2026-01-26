@@ -11,7 +11,7 @@ import { createSlice } from "@reduxjs/toolkit";
 // Ensure you are parsing the 'cart' from localStorage correctly
 const initialState = typeof window !== 'undefined' && localStorage.getItem('cart')
   ? JSON.parse(localStorage.getItem('cart'))
-  : { cartItems: [], shippingAddress: {}, paymentMethod: 'PayPal' };
+  : { cartItems: [], shippingAddress: {}, paymentMethod: 'PayPal' ,itemPrice:0,shippingPrice:0,taxPrice:0,totalPrice:0};
 
 
 
