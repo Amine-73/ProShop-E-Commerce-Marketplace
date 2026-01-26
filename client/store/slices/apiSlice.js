@@ -21,6 +21,13 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+    register: builder.mutation({
+      query: (data) => ({
+        url: "/api/users",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -28,4 +35,5 @@ export const {
   useGetProductsQuery,
   useGetProductDetailsQuery,
   useLoginMutation,
+  useRegisterMutation,
 } = apiSlice;
