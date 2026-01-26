@@ -23,6 +23,24 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
+//middleware for 404 Not Found
+app.use((req,res,next)=>{
+  const error=new Error(`Not Found ${req.originalUrl}`);
+  res.status(404);
+  next(error);
+})
+
+//Main Error Handler (this converts errors to json)
+app.use((err,req,res,next)=>{
+  const statusCode=res.statusCode===200?500:res.statusCode;
+  res.status(statusCode);
+  res.json({
+    message:err.message,
+    // only show the stack trace if we are in development mode 
+    stack:process.env.NODE_ENV ==='production'?'null':err.stack,
+  })
+})
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
