@@ -2,15 +2,19 @@
 import { useRouter } from 'next/navigation';
 import { Container, Grid, Typography, List, ListItem, Box, Card, Button, Stack, Divider } from '@mui/material';
 // import { useCart } from '../context/CartContext';
-import { UseSelector,useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { useEffect } from 'react';
+import { clearCartItem } from '@/store/slices/cartSlice';
+import {toast} from 'react-toastify' //for nice alert
+import { useCreateOrderMutation } from '@/store/slices/apiSlice';
 import { clearCartItem } from '@/store/slices/cartSlice';
 
 export default function PlaceOrderPage() {
   const router = useRouter();
   const dispatch=useDispatch();
-  const cart =useSelector((state)=>state.cart)
+  const cart =useSelector((state)=>state.cart);
+  const [createOrder,{isLoading}]=useCreateOrderMutation();
   // const { cartItems, shippingAddress, paymentMethod, clearCart } = useCart();
   const {cartItems,shippingAddress={},paymentMethod,clearCart}=cart||{};
   // Calculations
@@ -18,6 +22,24 @@ export default function PlaceOrderPage() {
   // const shippingPrice = itemsPrice > 100 ? 0 : 10; // Free shipping over $100
   // const totalPrice = itemsPrice + shippingPrice;
 
+  const placeOrderHandler=async ()=>{
+    try{
+      const res=await createOrder({
+        orderItems:cart.cartItems,
+        shippingAddress:cart.shippingAddress,
+        paymentMethod:cart.paymentMethod,
+        itemsPrice:cart.itemsPrice,
+        shippingPrice:cart.shippingPrice,
+        taxPrice:cart.taxPrice,
+        totalPrice:cart.totalPrice,
+      }).unwrap();
+
+      dispatch(clearCartItem());
+      router.push(`/order/${res._id}`);//redirect to order details
+    }catch(error){
+      alert(error?.data?.message || error.error)
+    }
+  }
 
   useEffect(()=>{
     if(!shippingAddress.address)
@@ -26,15 +48,15 @@ export default function PlaceOrderPage() {
 
   const {itemsPrice,shippingPrice,taxPrice,totalPrice}=cart
   // 1. Define the handler function here
-  const placeOrderHandler = () => {
-    // In a real app, you would call an API here to save the order to a database
+  // const placeOrderHandler = () => {
+  //   // In a real app, you would call an API here to save the order to a database
     
-    // Clear the cart items from state and localStorage
-    dispatch(clearCartItem());
+  //   // Clear the cart items from state and localStorage
+  //   dispatch(clearCartItem());
     
-    // Redirect the user to a success page
-    router.push('/success');
-  };
+  //   // Redirect the user to a success page
+  //   router.push('/success');
+  // };
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -115,9 +137,10 @@ export default function PlaceOrderPage() {
                 variant="contained" 
                 fullWidth 
                 onClick={placeOrderHandler}
+                disabled={cart.cartItems.length===0 || isLoading}
                 sx={{ bgcolor: '#FFD814', color: '#000', fontWeight: 'bold', mt: 2, py: 1.5, '&:hover': { bgcolor: '#F7CA00' } }}
               >
-                Place Order
+                {isLoading ? 'Processing...':'Place Order'}
               </Button>
             </Stack>
           </Card>
