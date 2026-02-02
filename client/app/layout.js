@@ -4,6 +4,8 @@ import "./globals.css";
 import {CartProvider} from './context/CartContext'
 import Header from "./Components/Header/Header";
 import ReduxProvider from '../store/ReduxProvider.js'
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +35,7 @@ export default function RootLayout({
           <Header />
             <main>
           {children}
+          <ToastContainer position="top-right" autoClose={3000}/>
         </main>
           
         {/* </CartProvider> */}

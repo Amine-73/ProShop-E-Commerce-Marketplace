@@ -38,10 +38,13 @@ const cartSlice = createSlice({
     localStorage.setItem('cart', JSON.stringify(state));
 },
     hydrateCart: (state) => {
-      const storage = localStorage.getItem("cart");
-      if (storage) {
-        return JSON.parse(storage);
+      if(typeof window !== 'undefined'){
+        const storage = localStorage.getItem("cart");
+        if (storage) {
+          return JSON.parse(storage);
+        }
       }
+      
     },
     addToCart: (state, action) => {
       const item = action.payload;

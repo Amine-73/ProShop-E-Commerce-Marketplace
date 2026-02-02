@@ -50,6 +50,8 @@ export default function Navbar() {
     setMounted(true);
   }, []);
 
+  if(!mounted)return null;
+
   // calcule total quantity or all items in cart
   const cartItemsCount = mounted
     ? cartItems.reduce((acc, item) => acc + item.qty, 0)

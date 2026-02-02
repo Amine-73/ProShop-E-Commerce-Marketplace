@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import { clearCartItem } from '@/store/slices/cartSlice';
 import {toast} from 'react-toastify' //for nice alert
 import { useCreateOrderMutation } from '@/store/slices/apiSlice';
-import { clearCartItem } from '@/store/slices/cartSlice';
+// import { clearCartItem } from '@/store/slices/cartSlice';
 
 export default function PlaceOrderPage() {
   const router = useRouter();
@@ -36,8 +36,8 @@ export default function PlaceOrderPage() {
 
       dispatch(clearCartItem());
       router.push(`/order/${res._id}`);//redirect to order details
-    }catch(error){
-      alert(error?.data?.message || error.error)
+    }catch(err){
+      alert(err?.data?.message || err.error)
     }
   }
 
