@@ -3,7 +3,7 @@ import { Grid, Typography, Card, CardContent, Rating ,Box} from '@mui/material';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function ProductItem({ product }: { product: any }) {
+export default function ProductItem({ product }) {
   return (
     <Grid size={{ xs: 12, sm: 6, md: 4, lg: 14 }}>
       <Link href={`/product/${product._id}`} style={{ textDecoration: 'none' }}>

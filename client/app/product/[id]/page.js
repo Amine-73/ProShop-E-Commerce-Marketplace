@@ -26,6 +26,7 @@ import { useEffect } from "react";
 import { useGetProductDetailsQuery } from "../../../store/slices/apiSlice";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../../store/slices/cartSlice";
+import { useSelector } from "react-redux";
 // import { useState } from "react";
 
 export default function ProductPage({ params }) {
@@ -38,7 +39,6 @@ export default function ProductPage({ params }) {
   // const [error,setError]=useState(false)
 
   const { data: product, isLoading, error } = useGetProductDetailsQuery(id);
-
   // useEffect(()=>{
   //   const fetchProduct=async()=>{
   //     try {
@@ -58,10 +58,18 @@ export default function ProductPage({ params }) {
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
   const router = useRouter();
-
+  const {userInfo}=useSelector((state)=>state.user)
   const addToCartHandler = () => {
-    dispatch(addToCart({ ...product, qty }));
-    // router.push("/cart");
+    if(!userInfo){
+      router.push('/login?redirect=/cart');
+      return;
+    }
+    const quantity=Number(qty)
+      /* dispatch(addToCart({ ...product, qty }));*/
+      dispatch(addToCart({item:product,quantity,userInfo}))
+      router.push("/cart");
+
+    
   };
 
   // const {addToCart} =useCart();
@@ -267,19 +275,7 @@ export default function ProductPage({ params }) {
                 >
                   Add to Cart
                 </Button>
-                <Button
-                  variant="contained"
-                  fullWidth
-                  sx={{
-                    bgcolor: "#ffa41c",
-                    color: "#000",
-                    borderRadius: "20px",
-                    "&:hover": { bgcolor: "#ff8f00" },
-                  }}
-                  disabled={product.countInStock === 0}
-                >
-                  Buy Now
-                </Button>
+                
               </Stack>
             </Card>
           </Stack>

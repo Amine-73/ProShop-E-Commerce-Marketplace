@@ -21,6 +21,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "@/store/slices/userSlice";
 import { useRouter } from "next/navigation";
 import { AccountCircle, KeyboardArrowDown } from "@mui/icons-material";
+import { clearCartItems } from "@/store/slices/cartSlice";
 
 export default function Navbar() {
   const { cartItems } = useSelector((state) => state.cart);
@@ -42,6 +43,9 @@ export default function Navbar() {
   };
   const logoutHandler = () => {
     dispatch(logout());
+    
+    localStorage.removeItem(`cart_${userInfo._id}`)
+    dispatch(clearCartItems())
     handleClose();
     router.push("/login");
   };
