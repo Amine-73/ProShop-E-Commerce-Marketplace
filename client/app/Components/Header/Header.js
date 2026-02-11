@@ -42,10 +42,12 @@ export default function Navbar() {
     setAnchorEl(null);
   };
   const logoutHandler = () => {
-    dispatch(logout());
-    
-    localStorage.removeItem(`cart_${userInfo._id}`)
-    dispatch(clearCartItems())
+    if (userInfo?._id) {
+    localStorage.removeItem(`cart_${userInfo._id}`);
+    }
+    // Make sure clearCartItems doesn't try to save to 'cart' inside the slice
+    dispatch(logout())
+    dispatch(clearCartItems()); 
     handleClose();
     router.push("/login");
   };
@@ -58,7 +60,7 @@ export default function Navbar() {
 
   // calcule total quantity or all items in cart
   const cartItemsCount = mounted
-    ? cartItems.reduce((acc, item) => acc + item.qty, 0)
+    ? (cartItems || []).reduce((acc, item) => acc +Number(item.qty||0), 0)
     : 0;
   return (
     <AppBar position="sticky" sx={{ bgcolor: "#131921", zIndex: 1100 }}>
@@ -79,7 +81,7 @@ export default function Navbar() {
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           {/* Cart Link */}
           <IconButton component={Link} href="/cart" sx={{ color: "white" }}>
-            <Badge badgeContent={cartItemsCount} color="error">
+            <Badge badgeContent={Number(cartItemsCount)} color="error">
               <ShoppingCartIcon />
             </Badge>
           </IconButton>

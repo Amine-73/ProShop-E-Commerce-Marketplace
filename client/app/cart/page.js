@@ -15,20 +15,29 @@ import { useDispatch,useSelector } from 'react-redux';
 export default function CartPage() {
     const router = useRouter();
     const dispatch=useDispatch()
-    const { cartItems,itemsPrice } = useSelector((state)=>state.cart);
-
+const { cartItems } = useSelector((state) => state.cart);
+    const { userInfo } = useSelector((state) => state.user); 
     // handlers using dispatch 
     const addToCartHandler=(item,qty)=>{
-      dispatch(addToCart({...item,qty}));
+      // dispatch(addToCart({...item,qty}));
+      dispatch(addToCart({ 
+        item: { ...item, qty: Number(qty) }, 
+        userInfo 
+      }));
     };
 
     const removeFromCartHandler=(id)=>{
-      dispatch(removeFromCart(id))
+      // dispatch(removeFromCart(id))
+      dispatch(removeFromCart({ 
+        id, 
+        userId: userInfo?._id 
+      }));
     };
 
     const clearCartItemHandler=()=>{
       if(window.confirm('Are you sure you want to remove all items from our cart ?')){
-        dispatch(clearCartItem())
+        // dispatch(clearCartItem())
+        dispatch(clearCartItems(userInfo?._id));
       }
     }
 
@@ -38,8 +47,11 @@ export default function CartPage() {
   // For now, we go straight to shipping
   router.push('/login?redirect=/shipping'); 
 };
-  const subtotalItems = cartItems.reduce((acc, item) => acc + item.qty, 0);
-  const subtotalPrice = cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2);
+    const subtotalItems = cartItems.reduce((acc, item) => acc + (Number(item.qty) || 0), 0);
+    const subtotalPrice = cartItems.reduce((acc, item) => {
+      return acc + (Number(item.qty) || 0) * (Number(item.price) || 0);
+    }, 0).toFixed(2);
+
 
   return (
     <Box sx={{ bgcolor: '#EAEDED', minHeight: '100vh', py: 4 }}>
@@ -91,7 +103,7 @@ export default function CartPage() {
                             <Stack direction="row" spacing={2} alignItems="center" sx={{ mt: 2 }}>
                               <Select
                                 size="small"
-                                value={item.qty}
+                                value={item.qty || 0}
                                 onChange={(e) => addToCartHandler(item, Number(e.target.value))}
                                 sx={{ bgcolor: '#F0F2F2', borderRadius: '8px', fontSize: '13px' }}
                               >

@@ -64,9 +64,12 @@ export default function ProductPage({ params }) {
       router.push('/login?redirect=/cart');
       return;
     }
-    const quantity=Number(qty)
+    
       /* dispatch(addToCart({ ...product, qty }));*/
-      dispatch(addToCart({item:product,quantity,userInfo}))
+      dispatch(addToCart({
+      item: { ...product, qty: Number(qty) },
+      userInfo,
+    }))
       router.push("/cart");
 
     

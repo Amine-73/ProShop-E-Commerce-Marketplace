@@ -3,3 +3,8 @@
   padding: 0px;
   /* background-color: beige; */
 }
+
+
+.MuiBackdrop-root {
+  pointer-events: none; 
+}
