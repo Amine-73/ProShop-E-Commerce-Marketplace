@@ -16,7 +16,7 @@ const userSlice=createSlice({
         logout:(state)=>{
             state.userInfo=null;
             localStorage.removeItem('userInfo');
-
+    
             //clear cart too
             localStorage.removeItem('cart');
             document.location.href=("/login")

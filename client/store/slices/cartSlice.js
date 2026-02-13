@@ -50,13 +50,16 @@ const cartSlice = createSlice({
       }
     },
     hydrateCart: (state, action) => {
-      // if(typeof window !== 'undefined'){
-      //   const storage = localStorage.getItem("cart");
-      //   if (storage) {
-      //     return JSON.parse(storage);
-      //   }
-      // }
       return { ...state, ...action.payload };
+      // return{
+      //   ...state,
+      //   cartItems: action.payload.cartItems || [],
+      //   itemsPrice: action.payload.itemsPrice || 0,
+      //   shippingPrice: action.payload.shippingPrice || 0,
+      //   taxPrice: action.payload.taxPrice || 0,
+      //   totalPrice: action.payload.totalPrice || 0,
+      // }
+
     },
     addToCart: (state, action) => {
       // const item = action.payload;
@@ -111,12 +114,12 @@ const cartSlice = createSlice({
         localStorage.setItem(`cart_${userId}`, JSON.setItem(state));
       }
     },
-    clearCartItem: (state) => {
-      state.cartItems = [];
-      // update local storage so the cart stays empty after refresh
-      localStorage.setItem("cart", JSON.stringify(state));
-    },
-    clearCartItems: (state) => {
+    // clearCartItem: (state) => {
+    //   state.cartItems = [];
+    //   // update local storage so the cart stays empty after refresh
+    //   localStorage.setItem("cart", JSON.stringify(state));
+    // },
+    clearCartItems: (state,action) => {
       const userId = action.payload;
       state.cartItems = [];
       state.shippingAddress = {};
@@ -126,8 +129,9 @@ const cartSlice = createSlice({
       state.totalPrice = 0;
       if (userId) {
         localStorage.removeItem(`cart_${userId}`);
+      }else{
+      localStorage.removeItem("cart")
       }
-      // localStorage.removeItem("cart")
     },
   },
 });
@@ -138,7 +142,7 @@ export const {
   removeFromCart,
   saveShippingAddress,
   savePaymentMethod,
-  clearCartItem,
+  // clearCartItem,
   clearCartItems,
 } = cartSlice.actions;
 export default cartSlice.reducer;

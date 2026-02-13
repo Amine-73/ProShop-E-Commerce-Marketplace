@@ -43,11 +43,11 @@ export default function Navbar() {
   };
   const logoutHandler = () => {
     if (userInfo?._id) {
-    localStorage.removeItem(`cart_${userInfo._id}`);
+      localStorage.removeItem(`cart_${userInfo._id}`);
     }
     // Make sure clearCartItems doesn't try to save to 'cart' inside the slice
-    dispatch(logout())
-    dispatch(clearCartItems()); 
+    dispatch(logout());
+    dispatch(clearCartItems());
     handleClose();
     router.push("/login");
   };
@@ -56,11 +56,11 @@ export default function Navbar() {
     setMounted(true);
   }, []);
 
-  if(!mounted)return null;
+  if (!mounted) return null;
 
   // calcule total quantity or all items in cart
   const cartItemsCount = mounted
-    ? (cartItems || []).reduce((acc, item) => acc +Number(item.qty||0), 0)
+    ? (cartItems || []).reduce((acc, item) => acc + Number(item.qty || 0), 0)
     : 0;
   return (
     <AppBar position="sticky" sx={{ bgcolor: "#131921", zIndex: 1100 }}>

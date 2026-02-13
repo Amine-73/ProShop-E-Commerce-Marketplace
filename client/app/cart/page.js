@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { addToCart,clearCartItem,removeFromCart } from '../../store/slices/cartSlice';
+import { addToCart,clearCartItems,removeFromCart } from '../../store/slices/cartSlice';
 import { useDispatch,useSelector } from 'react-redux';
 
 
