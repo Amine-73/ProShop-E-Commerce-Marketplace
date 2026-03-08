@@ -5,7 +5,7 @@ import { Container, Grid, Typography, List, ListItem, Box, Card, Button, Stack, 
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { useEffect } from 'react';
-import { clearCartItem } from '@/store/slices/cartSlice';
+import { clearCartItems } from '@/store/slices/cartSlice';
 import {toast} from 'react-toastify' //for nice alert
 import { useCreateOrderMutation } from '@/store/slices/apiSlice';
 // import { clearCartItem } from '@/store/slices/cartSlice';

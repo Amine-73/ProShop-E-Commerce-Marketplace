@@ -101,8 +101,11 @@ const cartSlice = createSlice({
       // localStorage.setItem('cart',JSON.stringify(state))
       const { address, userId } = action.payload;
       state.shippingAddress = address;
+      
       if (userId) {
         localStorage.setItem(`cart_${userId}`, JSON.stringify(state));
+      }else{
+        console.warn('Shipping saved to Redux, but no userId found for LocalStorage')
       }
     },
     savePaymentMethod: (state, action) => {

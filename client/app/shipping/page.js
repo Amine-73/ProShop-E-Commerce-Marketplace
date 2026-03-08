@@ -18,17 +18,27 @@ export default function ShippingPage() {
   const [city, setCity] = useState(shippingAddress?.city || '');
   const [postalCode, setPostalCode] = useState(shippingAddress?.postalCode || '');
   const [country, setCountry] = useState(shippingAddress?.country || '');
+  const { userInfo } = useSelector((state) => state.user);
 
   const dispatch=useDispatch()
   const addressData={address,city,postalCode,country}
   
   const submitHandler = (e) => {
-    e.preventDefault();
-    console.log('Dispatchign address',addressData)
-    // Save to Redux
-    dispatch(saveShippingAddress({ address, city, postalCode, country }));
-    //Move to Payment Screen
-    router.push('/payment');
+  e.preventDefault();
+  
+  // 1. Construct the exact object the slice expects
+  const dispatchData = {
+    address: { address, city, postalCode, country },
+    userId: userInfo?._id // <--- This must be included!
+  };
+
+  console.log('Dispatching with UserID:', dispatchData);
+
+  // 2. Dispatch the combined object
+  dispatch(saveShippingAddress(dispatchData));
+
+  // 3. Move to Payment
+  router.push('/payment');
   };
 
   return (

@@ -26,10 +26,20 @@ export default function PaymentPage() {
   };
 
   useEffect(() => {
-    const storedCart=JSON.parse(localStorage.getItem('cart'));
-  if (!storedCart?.shippingAddress?.address && !shippingAddress.address) {
-    router.push('/shipping'); // Send them back if they skipped a step
-  }
+    // 1. Get the current user ID
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    const userId = userInfo?._id;
+
+    // 2. Look for the CORRECT user-specific cart
+    const storedCart = userId ? JSON.parse(localStorage.getItem(`cart_${userId}`)) : null;
+
+    // 3. Check both Redux state and LocalStorage for the address
+    const hasAddress = shippingAddress?.address || storedCart?.shippingAddress?.address;
+
+    if (!hasAddress) {
+        console.log("Redirecting to shipping: Address not found for user", userId);
+        router.push('/shipping'); 
+    }
 }, [shippingAddress, router]);
   
 
