@@ -9,6 +9,11 @@ import orderRoutes from './routes/orderRoutes.js'
 dotenv.config();
 connectDB();
 
+if (process.env.NODE_ENV === 'production') {
+    console.error('ERROR: Cannot run seeder in production mode!'.red.bold);
+    process.exit(1);
+}
+
 const app = express();
 
 //midleware

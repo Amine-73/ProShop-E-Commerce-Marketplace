@@ -47,4 +47,11 @@ const getOrderById=asyncHandler(async (req,res)=>{
   }
 });
 
-export { addOrderItems , getOrderById};
+
+const getMyOrders = asyncHandler(async (req, res) => {
+  // 🚩 ERROR CHECK: Does req.user exist? (Needs 'protect' middleware)
+  const orders = await Order.find({ user: req.user._id });
+  res.json(orders);
+});
+
+export { addOrderItems , getOrderById,getMyOrders};
