@@ -10,10 +10,6 @@ const initialState = {
   totalPrice: 0,
 };
 
-// Ensure you are parsing the 'cart' from localStorage correctly
-// const initialState = typeof window !== 'undefined' && localStorage.getItem('cart')
-//   ? JSON.parse(localStorage.getItem('cart'))
-//   : { cartItems: [], shippingAddress: {}, paymentMethod: 'PayPal' ,itemPrice:0,shippingPrice:0,taxPrice:0,totalPrice:0,};
 
 const addDecimals = (num) => (Math.round(num * 100) / 100).toFixed(2);
 
@@ -51,18 +47,10 @@ const cartSlice = createSlice({
     },
     hydrateCart: (state, action) => {
       return { ...state, ...action.payload };
-      // return{
-      //   ...state,
-      //   cartItems: action.payload.cartItems || [],
-      //   itemsPrice: action.payload.itemsPrice || 0,
-      //   shippingPrice: action.payload.shippingPrice || 0,
-      //   taxPrice: action.payload.taxPrice || 0,
-      //   totalPrice: action.payload.totalPrice || 0,
-      // }
-
+      
     },
     addToCart: (state, action) => {
-      // const item = action.payload;
+      
       const { item, userInfo } = action.payload || {};
       if (!item || !item._id) return;
       const existItem = state.cartItems.find((x) => x._id === item._id);
@@ -93,12 +81,9 @@ const cartSlice = createSlice({
       if (userInfo?._id) {
         localStorage.setItem(`cart_${userInfo._id}`, JSON.stringify(state));
       }
-      // localStorage.setItem("cart", JSON.stringify(state));
     },
     saveShippingAddress: (state, action) => {
-      // state.shippingAddress=action.payload;
-      // //update local storage so it persist on refresh
-      // localStorage.setItem('cart',JSON.stringify(state))
+      
       const { address, userId } = action.payload;
       state.shippingAddress = address;
       
@@ -109,19 +94,13 @@ const cartSlice = createSlice({
       }
     },
     savePaymentMethod: (state, action) => {
-      // state.paymentMethod=action.payload;
-      // localStorage.setItem('cart',JSON.stringify(state))
       const { method, userId } = action.payload;
       state.paymentMethod = method;
       if (userId) {
-        localStorage.setItem(`cart_${userId}`, JSON.setItem(state));
+        localStorage.setItem(`cart_${userId}`, JSON.stringify(state));
       }
     },
-    // clearCartItem: (state) => {
-    //   state.cartItems = [];
-    //   // update local storage so the cart stays empty after refresh
-    //   localStorage.setItem("cart", JSON.stringify(state));
-    // },
+    
     clearCartItems: (state,action) => {
       const userId = action.payload;
       state.cartItems = [];
@@ -130,11 +109,7 @@ const cartSlice = createSlice({
       state.itemsPrice = 0;
       state.shippingPrice = 0;
       state.totalPrice = 0;
-      if (userId) {
-        localStorage.removeItem(`cart_${userId}`);
-      }else{
-      localStorage.removeItem("cart")
-      }
+      
     },
   },
 });
@@ -145,7 +120,6 @@ export const {
   removeFromCart,
   saveShippingAddress,
   savePaymentMethod,
-  // clearCartItem,
   clearCartItems,
 } = cartSlice.actions;
 export default cartSlice.reducer;

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 const initialState={
-    userInfo:typeof window!=='undefined' ? JSON.parse(localStorage.getItem('userInfo')) : 'null'
+    userInfo: typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('userInfo')) : null
 };
 
 const userSlice=createSlice({
@@ -18,7 +18,7 @@ const userSlice=createSlice({
             localStorage.removeItem('userInfo');
     
             //clear cart too
-            localStorage.removeItem('cart');
+            // localStorage.removeItem('cart');
             document.location.href=("/login")
         }
         

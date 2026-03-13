@@ -42,9 +42,9 @@ export default function Navbar() {
     setAnchorEl(null);
   };
   const logoutHandler = () => {
-    if (userInfo?._id) {
-      localStorage.removeItem(`cart_${userInfo._id}`);
-    }
+    // if (userInfo?._id) {
+    //   localStorage.removeItem(`cart_${userInfo._id}`);
+    // }
     // Make sure clearCartItems doesn't try to save to 'cart' inside the slice
     dispatch(logout());
     dispatch(clearCartItems());

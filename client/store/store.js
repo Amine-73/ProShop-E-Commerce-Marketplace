@@ -4,10 +4,6 @@ import cartSliceReducer from './slices/cartSlice';
 import userReducer from './slices/userSlice'
 
 const store=configureStore({
-    // reducer:{
-    //     [apiSlice.reducerPath]:apiSlice.reducer,
-    //     cart:cartSliceReducer,
-    // },
     reducer:{
         [apiSlice.reducerPath]:apiSlice.reducer,
         cart: cartSliceReducer,

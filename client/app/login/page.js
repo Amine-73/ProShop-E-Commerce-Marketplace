@@ -41,9 +41,20 @@ export default function LoginPage() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await login({ email, password }).unwrap();
-      dispatch(setCredentials({ ...res }));
-      router.push(redirect);
+    const res = await login({ email, password }).unwrap();
+    
+    // 1. Set User Info
+    dispatch(setCredentials({ ...res }));
+
+    // 2. MANUAL JUMP BACK: Load the specific user's cart immediately
+    const savedCart = localStorage.getItem(`cart_${res._id}`);
+    if (savedCart) {
+      console.log("LoginPage: Found saved cart, hydrating now...");
+      dispatch(hydrateCart(JSON.parse(savedCart)));
+    }
+
+    // 3. Now redirect
+    router.push(redirect);
     } catch (error) {
       console.log(error);
     }
