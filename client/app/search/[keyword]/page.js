@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 export default function SearchPage() {
   const params = useParams();
-  const keyword = params.keyword as string;
+  const keyword = params.keyword;
 
   // Filter products based on the keyword (case-insensitive)
   const filteredProducts = products.filter((p) =>

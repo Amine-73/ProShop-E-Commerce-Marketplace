@@ -50,11 +50,25 @@ export const apiSlice = createApi({
       }),
       keepUnusedDataFor:5,
     }),
+    updateProfile:builder.mutation({
+      query:(data)=>({
+        url:'/api/users/profile',
+        method:'PUT',
+        body:data,
+      })
+    }),
+    getMyOrders:builder.query({
+      query:()=>({
+        url:'/api/orders/mine'
+      })
+    })
   }),
 });
 
 export const {
   useGetProductsQuery,
+  useUpdateProfileMutation,
+  useGetMyOrdersQuery,
   useGetProductDetailsQuery,
   useLoginMutation,
   useRegisterMutation,

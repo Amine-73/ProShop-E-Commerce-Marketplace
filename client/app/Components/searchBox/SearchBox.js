@@ -8,7 +8,7 @@ export default function SearchBox() {
   const [keyword, setKeyword] = useState('');
   const router = useRouter();
 
-  const submitHandler = (e: React.FormEvent) => {
+  const submitHandler = (e) => {
     e.preventDefault();
     if (keyword.trim()) {
       router.push(`/search/${keyword}`);
