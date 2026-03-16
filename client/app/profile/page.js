@@ -115,7 +115,15 @@ export default function ProfilePage() {
                         <TableCell>{order.isPaid ? order.paidAt.substring(0, 10) : '❌'}</TableCell>
                         <TableCell>{order.isDelivered ? order.deliveredAt.substring(0, 10) : '❌'}</TableCell>
                         <TableCell>
-                          <Button size="small" variant="outlined" href={`/order/${order._id}`}>Details</Button>
+                          <Button 
+                          size="small" 
+                          variant="outlined" 
+                          component={Link} // Use Next.js Link
+                          href={`/order/${order._id}`}
+                          sx={{ color: '#000', borderColor: '#000' }}
+                        >
+                          Details
+                        </Button>
                         </TableCell>
                       </TableRow>
                     ))
