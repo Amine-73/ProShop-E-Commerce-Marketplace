@@ -1,30 +1,37 @@
-import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
-import User from '../models/userModal.js';
 
 
-const protect =asyncHandler(async (req,res,next)=>{
+
+
+export const protect = asyncHandler(async (req, res, next) => {
     let token;
-    if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
+
+    // 1. Check for token in Cookie OR in Authorization Header
+    if (req.cookies && req.cookies.jwt) {
+        token = req.cookies.jwt;
+    } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        token = req.headers.authorization.split(' ')[1];
+    }
+
+    if (token) {
         try {
-            token=req.headers.authorization.split(' ')[1];
-
-            const decoded=jwt.verify(token,process.env.JWT_SECRET);
-
-            req.user=await User.findById(decoded.id).select('-password');
+            // const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            
+            // 2. Use .findById(decoded.userId) or (decoded.id) 
+            // depending on how you signed the token originally
+            // req.user = await User.findById(decoded.userId || decoded.id).select('-password');
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            console.log('Decoded Token:', decoded);
+            req.user = await User.findById(decoded.userId || decoded.id).select('-password');
 
             next();
         } catch (error) {
-            console.log(error);
+            console.error('Token verification error:', error.message);
             res.status(401);
             throw new Error('Not authorized, token failed');
         }
-    }
-
-    if(!token){
+    } else {
         res.status(401);
-        throw new Error('Not authorized, no token')
+        throw new Error('Not authorized, no token');
     }
-})
-
-export {protect};
+});
