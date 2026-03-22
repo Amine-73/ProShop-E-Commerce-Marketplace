@@ -22,10 +22,13 @@ import { logout } from "@/store/slices/userSlice";
 import { useRouter } from "next/navigation";
 import { AccountCircle, KeyboardArrowDown } from "@mui/icons-material";
 import { clearCartItems } from "@/store/slices/cartSlice";
+import { useLogoutMutation } from "@/store/slices/apiSlice";
+
 
 export default function Navbar() {
   const { cartItems } = useSelector((state) => state.cart);
   const [mounted, setMounted] = useState(false);
+  const [logoutApiCall] = useLogoutMutation();
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -41,11 +44,12 @@ export default function Navbar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const logoutHandler = () => {
+  const logoutHandler =async () => {
     // if (userInfo?._id) {
     //   localStorage.removeItem(`cart_${userInfo._id}`);
     // }
     // Make sure clearCartItems doesn't try to save to 'cart' inside the slice
+    await logoutApiCall().unwrap();
     dispatch(logout());
     dispatch(clearCartItems());
     handleClose();

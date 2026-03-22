@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useUpdateProfileMutation, useGetMyOrdersQuery } from '../../store/slices/apiSlice';
 import { setCredentials } from '@/store/slices/userSlice';
+import Link from 'next/link';
 
 
 
@@ -73,10 +74,10 @@ export default function ProfilePage() {
               value={email} onChange={(e) => setEmail(e.target.value)} />
             
             <TextField fullWidth label="New Password" type="password" variant="outlined" margin="normal" 
-              value={password} onChange={(e) => setPassword(e.target.value)} />
+              value={password} onChange={(e) => setPassword(e.target.value)} required/>
             
             <TextField fullWidth label="Confirm Password" type="password" variant="outlined" margin="normal" 
-              value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+              value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}  required/>
             
             <Button type="submit" variant="contained" fullWidth disabled={loadingUpdate}
               sx={{ mt: 3, bgcolor: '#000', color: '#fff', '&:hover': { bgcolor: '#333' } }}>

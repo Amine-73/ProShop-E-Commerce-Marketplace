@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { USERS_URL } from '../../app/canstants';
+
 
 export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" ,
-    baseUrl: "http://localhost:5000",
   credentials: 'include', // 🚩 Add this line
   prepareHeaders: (headers, { getState }) => {
     const token = getState().user?.userInfo?.token;
@@ -63,7 +64,13 @@ export const apiSlice = createApi({
       query:()=>({
         url:'/api/orders/mine'
       })
-    })
+    }),
+    logout: builder.mutation({
+      query: () => ({
+        url: `${USERS_URL}/logout`,
+        method: 'POST',
+      }),
+    }),
   }),
 });
 
@@ -76,4 +83,5 @@ export const {
   useRegisterMutation,
   useCreateOrderMutation,
   useGetOrderDetailsQuery,
+  useLogoutMutation,
 } = apiSlice;
