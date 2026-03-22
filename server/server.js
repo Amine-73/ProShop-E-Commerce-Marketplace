@@ -5,7 +5,10 @@ import connectDB from "./config/db.js";
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from './routes/userRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
-import cookieParser from 'cookie-parser'; // 🚩 Don't forget this for cookies!
+import cookieParser from 'cookie-parser'; 
+import { notFound,errorHandler } from "./middleware/errorMiddleware.js";
+
+
 //load envirenment variables
 dotenv.config();
 connectDB();
@@ -82,6 +85,9 @@ app.use((err, req, res, next) => {
     stack: process.env.NODE_ENV === 'production' ? null : err.stack,
   });
 });
+
+app.use(notFound);
+app.use(errorHandler);
 
 
 app.listen(PORT, () => {

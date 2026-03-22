@@ -1,11 +1,14 @@
 import asyncHandler from 'express-async-handler';
+import jwt from 'jsonwebtoken'; // 🚩 Make sure this says 'jwt'
+import User from '../models/userModal.js';
 
 
 
 
 export const protect = asyncHandler(async (req, res, next) => {
-    let token;
+    let token=req.cookies.jwt;
 
+    
     // 1. Check for token in Cookie OR in Authorization Header
     if (req.cookies && req.cookies.jwt) {
         token = req.cookies.jwt;
@@ -15,13 +18,8 @@ export const protect = asyncHandler(async (req, res, next) => {
 
     if (token) {
         try {
-            // const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            
-            // 2. Use .findById(decoded.userId) or (decoded.id) 
-            // depending on how you signed the token originally
-            // req.user = await User.findById(decoded.userId || decoded.id).select('-password');
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            console.log('Decoded Token:', decoded);
+            
             req.user = await User.findById(decoded.userId || decoded.id).select('-password');
 
             next();
