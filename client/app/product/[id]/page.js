@@ -1,5 +1,4 @@
 "use client";
-import products from "../../Components/Products/Products";
 import {
   Container,
   Grid,
@@ -27,34 +26,15 @@ import { useGetProductDetailsQuery } from "../../../store/slices/apiSlice";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../../store/slices/cartSlice";
 import { useSelector } from "react-redux";
-// import { useState } from "react";
+
 
 export default function ProductPage({ params }) {
   //Unwrap the params promise using React.use()
   const unwrappedParams = React.use(params);
   const { id } = useParams(); //get the _id From URL
 
-  // const [product,setProduct]=useState(null);
-  // const [loading,setLoading]=useState(true);
-  // const [error,setError]=useState(false)
-
   const { data: product, isLoading, error } = useGetProductDetailsQuery(id);
-  // useEffect(()=>{
-  //   const fetchProduct=async()=>{
-  //     try {
-  //       const {data}=await axios.get(`http://localhost:5000/api/products/${id}`);
-  //       setProduct(data);
-  //       setLoading(false);
-  //     } catch (error) {
-  //       console.log(error);
-  //       setError(true);
-  //       setLoading(false)
-  //     }
-  //   }
-  //   if(id) fetchProduct();
-  // },[id])
-
-  // const id = unwrappedParams.id;
+ 
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -75,10 +55,7 @@ export default function ProductPage({ params }) {
     
   };
 
-  // const {addToCart} =useCart();
-  // const handleAddToCart=()=>{
-  //   addToCart(product,qty)
-  // }
+  
 
   if (isLoading)
     return (
@@ -98,12 +75,7 @@ export default function ProductPage({ params }) {
       </Container>
     );
 
-  // Find the product that matches the ID in the URL
-  // const product = products.find((p) => String(p._id) === String(id));
 
-  // if (!product) {
-  //   return <Typography variant="h5">Product Not Found</Typography>;
-  // }
 
   return (
     <Container maxWidth="lg" sx={{ py: 5 }}>
