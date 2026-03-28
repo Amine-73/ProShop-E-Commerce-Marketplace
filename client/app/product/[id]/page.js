@@ -27,35 +27,32 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../../../store/slices/cartSlice";
 import { useSelector } from "react-redux";
 
-
 export default function ProductPage({ params }) {
   //Unwrap the params promise using React.use()
   const unwrappedParams = React.use(params);
   const { id } = useParams(); //get the _id From URL
 
   const { data: product, isLoading, error } = useGetProductDetailsQuery(id);
- 
+
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
   const router = useRouter();
-  const {userInfo}=useSelector((state)=>state.user)
+  const { userInfo } = useSelector((state) => state.user);
   const addToCartHandler = () => {
-    if(!userInfo){
-      router.push('/login?redirect=/cart');
+    if (!userInfo) {
+      router.push("/login?redirect=/cart");
       return;
     }
-    
-      /* dispatch(addToCart({ ...product, qty }));*/
-      dispatch(addToCart({
-      item: { ...product, qty: Number(qty) },
-      userInfo,
-    }))
-      router.push("/cart");
 
-    
+    /* dispatch(addToCart({ ...product, qty }));*/
+    dispatch(
+      addToCart({
+        item: { ...product, qty: Number(qty) },
+        userInfo,
+      }),
+    );
+    router.push("/cart");
   };
-
-  
 
   if (isLoading)
     return (
@@ -75,10 +72,8 @@ export default function ProductPage({ params }) {
       </Container>
     );
 
-
-
   return (
-    <Container maxWidth="lg" sx={{ py: 5 }}>
+    <div style={{ margin: "40px 80px" }}>
       {/* Back Button */}
       <Button
         component={Link}
@@ -193,7 +188,7 @@ export default function ProductPage({ params }) {
               </Typography>
               <Typography
                 variant="body1"
-                sx={{ fontSize: "0.95rem", lineHeight: 1.6 }}
+                sx={{ fontSize: "0.95rem", lineHeight: 1.6, width: "100%" }}
               >
                 {product.description}
               </Typography>
@@ -250,12 +245,11 @@ export default function ProductPage({ params }) {
                 >
                   Add to Cart
                 </Button>
-                
               </Stack>
             </Card>
           </Stack>
         </Grid>
       </Grid>
-    </Container>
+    </div>
   );
 }

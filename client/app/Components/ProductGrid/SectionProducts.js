@@ -15,23 +15,6 @@ import Image from "next/image";
 import { useGetProductsQuery } from "../../../store/slices/apiSlice.js";
 
 export default function SectionProducts() {
-  // const [products,setProducts]=useState([]);
-  // const [loading,setLoading]=useState(true);
-
-  //   useEffect(()=>{
-  //     const fetchProducts=async()=>{
-  //       try {
-  // // Change this line:
-  //         const { data } = await axios.get('http://localhost:5000/api/products');        setProducts(data);
-  //         setLoading(false);
-  //       } catch (error) {
-  //         console.log("Error fetching products:",error);
-  //         setLoading(false);
-  //       }
-  //     }
-  //     fetchProducts();
-  //   },[])
-
   const { data: products, isLoading, error } = useGetProductsQuery();
 
   if (isLoading)
