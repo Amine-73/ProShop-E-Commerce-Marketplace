@@ -1,11 +1,11 @@
 "use client";
-import React, { useState } from 'react';
-import { Paper, InputBase, IconButton } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import { useRouter } from 'next/navigation';
+import React, { useState } from "react";
+import { Paper, InputBase, IconButton } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import { useRouter } from "next/navigation";
 
 export default function SearchBox() {
-  const [keyword, setKeyword] = useState('');
+  const [keyword, setKeyword] = useState("");
   const router = useRouter();
 
   const submitHandler = (e) => {
@@ -13,7 +13,7 @@ export default function SearchBox() {
     if (keyword.trim()) {
       router.push(`/search/${keyword}`);
     } else {
-      router.push('/');
+      router.push("/");
     }
   };
 
@@ -21,21 +21,34 @@ export default function SearchBox() {
     <Paper
       component="form"
       onSubmit={submitHandler}
-      sx={{backgroundColor: 'rgba(255,255,255,0.15)', 
-              borderRadius: '20px', 
-              display: 'flex', 
-              alignItems: 'center', 
-              px: 2,
-              width: { xs: '100%', md: '400px' }  }}
+      sx={{
+        backgroundColor: "white",
+        borderRadius: "20px",
+        display: "flex",
+        alignItems: "center",
+        px: 2,
+        width: { xs: "100%", md: "400px" },
+      }}
     >
       <InputBase
-        sx={{ ml: 1, flex: 1 ,color:'white'}}
+        sx={{
+          ml: 1,
+          flex: 1,
+          color: "white",
+          color: "black", // ✅ typed text color
+          // optional: white background
+          px: 1, // padding inside
+          borderRadius: 1, // rounded corners
+          "& .MuiInputBase-input::placeholder": {
+            color: "black", // ✅ placeholder color
+            opacity: 1, // make sure it’s visible
+          },
+        }}
         placeholder="Search Products..."
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-
       />
-      <IconButton type="submit" sx={{ p: '10px', color: '#febd69' }}>
+      <IconButton type="submit" sx={{ p: "10px", color: "#febd69" }}>
         <SearchIcon />
       </IconButton>
     </Paper>
