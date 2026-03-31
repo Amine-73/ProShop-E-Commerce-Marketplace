@@ -1,62 +1,56 @@
 "use client";
 import { useRouter } from 'next/navigation';
 import { Container, Grid, Typography, List, ListItem, Box, Card, Button, Stack, Divider } from '@mui/material';
-// import { useCart } from '../context/CartContext';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect,useState } from 'react';
 import { clearCartItems } from '@/store/slices/cartSlice';
-import {toast} from 'react-toastify' //for nice alert
 import { useCreateOrderMutation } from '@/store/slices/apiSlice';
-// import { clearCartItem } from '@/store/slices/cartSlice';
 
 export default function PlaceOrderPage() {
   const router = useRouter();
-  const dispatch=useDispatch();
-  const cart =useSelector((state)=>state.cart);
-  const [createOrder,{isLoading}]=useCreateOrderMutation();
-  // const { cartItems, shippingAddress, paymentMethod, clearCart } = useCart();
-  const {cartItems,shippingAddress={},paymentMethod,clearCart}=cart||{};
-  // Calculations
-  // const itemsPrice = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
-  // const shippingPrice = itemsPrice > 100 ? 0 : 10; // Free shipping over $100
-  // const totalPrice = itemsPrice + shippingPrice;
+  const dispatch = useDispatch();
+  
+  const cart = useSelector((state) => state.cart);
+  const { cartItems, shippingAddress, paymentMethod, itemsPrice, shippingPrice, taxPrice, totalPrice } = cart;
 
-  const placeOrderHandler=async ()=>{
-    try{
-      const res=await createOrder({
-        orderItems:cart.cartItems,
-        shippingAddress:cart.shippingAddress,
-        paymentMethod:cart.paymentMethod,
-        itemsPrice:cart.itemsPrice,
-        shippingPrice:cart.shippingPrice,
-        taxPrice:cart.taxPrice,
-        totalPrice:cart.totalPrice,
+  const [createOrder, { isLoading }] = useCreateOrderMutation();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  useEffect(() => {
+    if (!isSuccess) {
+      if (!shippingAddress?.address) {
+        router.push('/shipping');
+      } else if (!paymentMethod) {
+        router.push('/payment');
+      }
+    }
+  }, [shippingAddress, paymentMethod, router]);
+
+
+  const placeOrderHandler = async () => {
+    try {
+      setIsSubmitting(true); // 🚩 Set this to true before starting
+      
+      const res = await createOrder({
+        orderItems: cartItems,
+        shippingAddress: shippingAddress,
+        paymentMethod: paymentMethod || 'PayPal',
+        itemsPrice: itemsPrice,
+        shippingPrice: shippingPrice,
+        taxPrice: taxPrice,
+        totalPrice: totalPrice,
       }).unwrap();
 
-      dispatch(clearCartItem());
-      router.push(`/order/${res._id}`);//redirect to order details
-    }catch(err){
-      alert(err?.data?.message || err.error)
+      setIsSuccess(true);
+      dispatch(clearCartItems());
+      router.push(`/order/${res._id}`);
+    } catch (err) {
+      setIsSubmitting(false); // 🚩 Reset if it fails
+      alert(err?.data?.message || err.error);
     }
-  }
-
-  useEffect(()=>{
-    if(!shippingAddress.address)
-      router.push('/shipping')
-  },[shippingAddress.address,router])
-
-  const {itemsPrice,shippingPrice,taxPrice,totalPrice}=cart
-  // 1. Define the handler function here
-  // const placeOrderHandler = () => {
-  //   // In a real app, you would call an API here to save the order to a database
-    
-  //   // Clear the cart items from state and localStorage
-  //   dispatch(clearCartItem());
-    
-  //   // Redirect the user to a success page
-  //   router.push('/success');
-  // };
+  };
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>

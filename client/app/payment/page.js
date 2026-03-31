@@ -12,17 +12,24 @@ export default function PaymentPage() {
   const [paymentMethod, setPaymentMethod] = useState('PayPal');
   const router = useRouter();
   //get shipping Adress from Redux Store
-  const shippingAddress=useSelector((state)=>state.cart)
   const dispatch=useDispatch();
-  // const { shippingAddress } = useCart();
 
+  const cart = useSelector((state) => state.cart);
+  const { shippingAddress } = cart;
+
+  const { userInfo } = useSelector((state) => state.user);
 
   const submitHandler = (e) => {
-    e.preventDefault();
-    //Save the payment method to Redux
-    dispatch(savePaymentMethod(paymentMethod))
-    // Logic to save payment method can go here
-    router.push('/placeorder');
+    e.preventDefault(); // 🚩 CRITICAL: Prevents page reload
+    
+    // 2. Save to Redux
+    dispatch(savePaymentMethod({ 
+      method: paymentMethod, 
+      userId: userInfo?._id 
+    }));
+    
+    // 3. Move to the next step
+    router.push('/placeorder'); 
   };
 
   useEffect(() => {
