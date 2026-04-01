@@ -7,16 +7,12 @@ export const apiSlice = createApi({
   credentials: 'include', // 🚩 Add this line
   prepareHeaders: (headers, { getState }) => {
     const state = getState();
-  // Try logging this to your browser console to see what is inside
-  console.log('FULL STATE:', state); 
 
   const token = state.user?.userInfo?.token; 
 
   if (token) {
     headers.set('authorization', `Bearer ${token}`);
-    console.log('TOKEN ATTACHED:', token);
-  } else {
-    console.log('NO TOKEN FOUND IN STATE');
+    
   }
   return headers;
 },

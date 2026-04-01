@@ -14,7 +14,7 @@ import {
   Divider,
 } from "@mui/material";
 import Link from "next/link";
-import { useRouter, userSearchParams, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useLoginMutation } from "../../store/slices/apiSlice";
 import { setCredentials } from "../../store/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -49,14 +49,14 @@ export default function LoginPage() {
     // 2. MANUAL JUMP BACK: Load the specific user's cart immediately
     const savedCart = localStorage.getItem(`cart_${res._id}`);
     if (savedCart) {
-      console.log("LoginPage: Found saved cart, hydrating now...");
+      
       dispatch(hydrateCart(JSON.parse(savedCart)));
     }
 
     // 3. Now redirect
     router.push(redirect);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

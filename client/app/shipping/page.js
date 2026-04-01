@@ -1,8 +1,7 @@
 "use client";
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { Container, Box, Typography, TextField, Button, Stack, Stepper, Step, StepLabel } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { useCart } from '../context/CartContext';
 import { useDispatch, useSelector } from 'react-redux';
 import {saveShippingAddress} from '@/store/slices/cartSlice'
 
@@ -32,7 +31,6 @@ export default function ShippingPage() {
     userId: userInfo?._id // <--- This must be included!
   };
 
-  console.log('Dispatching with UserID:', dispatchData);
 
   // 2. Dispatch the combined object
   dispatch(saveShippingAddress(dispatchData));

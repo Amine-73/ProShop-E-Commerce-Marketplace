@@ -1,10 +1,9 @@
 "use client";
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { Container, Typography, Button, Radio, RadioGroup, FormControlLabel, FormControl, Stepper, Step, StepLabel, Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-// import {useCart} from '../context/CartContext'
-import { UseSelector,UseDispatch, useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { savePaymentMethod } from '@/store/slices/cartSlice';
 
 
@@ -44,7 +43,6 @@ export default function PaymentPage() {
     const hasAddress = shippingAddress?.address || storedCart?.shippingAddress?.address;
 
     if (!hasAddress) {
-        console.log("Redirecting to shipping: Address not found for user", userId);
         router.push('/shipping'); 
     }
 }, [shippingAddress, router]);

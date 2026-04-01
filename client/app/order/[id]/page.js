@@ -2,7 +2,6 @@
 import { useParams } from 'next/navigation';
 import { useGetOrderDetailsQuery } from '@/store/slices/apiSlice';
 import { Container, Typography, Grid, List, ListItem, Card, Box, Divider, Stack } from '@mui/material';
-import Image from 'next/image';
 
 export default function OrderDetailsPage() {
   const { id: orderId } = useParams();

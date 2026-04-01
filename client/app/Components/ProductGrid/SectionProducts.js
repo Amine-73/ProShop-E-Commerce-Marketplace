@@ -8,8 +8,6 @@ import {
   CircularProgress,
   Rating,
 } from "@mui/material";
-// import {useEffect,useState} from 'react'
-// import axios from 'axios'
 import Link from "next/link";
 import Image from "next/image";
 import { useGetProductsQuery } from "../../../store/slices/apiSlice.js";
